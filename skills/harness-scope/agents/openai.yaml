@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Scope"
+  short_description: "프로젝트 책임 범위와 경계를 정리합니다"
+  default_prompt: "Use $harness-scope to draft the project scope section."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Secrets"
+  short_description: "환경 변수와 시크릿 안전 규칙을 정리합니다"
+  default_prompt: "Use $harness-secrets to draft secrets-handling guidance."

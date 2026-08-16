@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Scan"
+  short_description: "프로젝트 사실과 근거를 조사합니다"
+  default_prompt: "Use $harness-scan to collect facts for this project's agent instructions."

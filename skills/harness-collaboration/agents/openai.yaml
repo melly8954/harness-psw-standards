@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Collaboration"
+  short_description: "협업 변경 보존과 충돌 방지 기준을 정리합니다"
+  default_prompt: "Use $harness-collaboration to draft collaboration safeguards."

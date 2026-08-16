@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Verification"
+  short_description: "실행 가능한 검증과 QA 기준을 정리합니다"
+  default_prompt: "Use $harness-verification to draft verification and QA guidance."

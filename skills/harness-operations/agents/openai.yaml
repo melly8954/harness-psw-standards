@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Operations"
+  short_description: "실행과 운영 책임 경계를 정리합니다"
+  default_prompt: "Use $harness-operations to draft runtime and operations guidance."
