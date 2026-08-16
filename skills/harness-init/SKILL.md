@@ -1,6 +1,6 @@
 ---
 name: harness-init
-description: 프로젝트의 문서 기반과 AGENTS.md 또는 CLAUDE.md 하네스를 처음 구축하거나 재구성할 때, 조사·문서 계획·초안·검토·승인 후 반영을 고정 순서로 진행한다.
+description: 프로젝트의 문서 기반과 AGENTS.md 또는 CLAUDE.md 하네스를 처음 구축할 때, 조사·문서 계획·초안·검토·승인 후 반영을 고정 순서로 진행한다.
 ---
 
 # Harness Init
