@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harness Implementation"
-  short_description: "구현 규칙의 진입점과 핵심 원칙을 만듭니다"
-  default_prompt: "Use $harness-implementation to draft implementation guidance."

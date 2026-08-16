@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harness Routing"
-  short_description: "필요한 문서의 탐색 경로를 설계합니다"
-  default_prompt: "Use $harness-routing to build the document routing section."

@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harness Git"
-  short_description: "확인된 Git 작업 정책을 지시서로 정리합니다"
-  default_prompt: "Use $harness-git to draft Git workflow guidance."

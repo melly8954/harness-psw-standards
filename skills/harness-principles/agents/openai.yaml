@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harness Principles"
-  short_description: "프로젝트 공통 작업 원칙을 정리합니다"
-  default_prompt: "Use $harness-principles to draft common work principles."

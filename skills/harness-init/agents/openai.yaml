@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harness Init"
-  short_description: "프로젝트 지시서 하네스 전체 흐름을 시작합니다"
-  default_prompt: "Use $harness-init to bootstrap agent instructions for this project."
