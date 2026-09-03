@@ -36,11 +36,18 @@ global/harness/  v0 공통 실행 규칙·문서 체계
 
 v0 산출물을 이미 가진 저장소다. 신세대로 이전하기 전까지 v0가 필요하다.
 
-| 저장소 | 보유 산출물 | 필요 스킬 |
+| 저장소 | 보유 산출물 | 설치한 스킬 |
 |---|---|---|
-| Re-Echo | prd · architecture · erd · api · app-design · coding-convention · decisions | 9종 전부 |
-| masilmap-app | prd · architecture · api | prd-design · architecture-design · api-design · decisions-sync |
-| G-ReBO | coding-convention · decisions | coding-convention-design · decisions-sync |
+| Re-Echo | prd · architecture · erd · api · app-design · coding-convention · decisions | 7종 + `harness-audit` |
+| G-ReBO | PRD · Architecture · ERD · API · coding-convention · decisions | 6종 + `harness-audit` (app-design 제외) |
+
+`harness-bootstrap`은 설치하지 않는다 — 두 저장소 모두 구축이 끝나 있고,
+신규 구축은 신세대 `harness-init`이 소유한다.
+
+**`masilmap-app`은 v0 대상이 아니다.** 문서 영역 이름이 v0와 겹쳐 보이지만
+신세대로 구축된 프로젝트다 — `docs/README.md` 문서 지도 · `conventions/` ·
+`open-questions/` · 경량 라우터 `CLAUDE.md`, v0 스킬 참조 0건.
+v0를 설치하면 이중 체계가 된다.
 
 ## 사용법
 
@@ -51,6 +58,17 @@ v0는 사용자 레벨에 설치하지 않는다 — 모든 프로젝트에 걸�
 mkdir -p <프로젝트>/.claude/skills
 cp -r legacy/skills/<스킬명> <프로젝트>/.claude/skills/
 ```
+
+**전역에 남겨야 하는 것이 있다.** v0 스킬 9종 전부가 아래 경로를 하드 참조하므로
+이 두 문서는 사용자 레벨에 유지한다. 자동 로드되지 않고 스킬이 요청할 때만 읽힌다.
+
+```text
+~/.claude/harness/common-execution-rules.md
+~/.claude/harness/harness-structure.md
+```
+
+`global/harness/`의 사본은 그 파일이 유실됐을 때의 복구용이다. 참조 경로를
+프로젝트 내부로 바꾸려면 스킬 9종을 모두 개정해야 하므로 그렇게 하지 않는다.
 
 프로젝트 사본이 이 정본과 갈라지면 다시 복사한다. v0는 개정하지 않는다 —
 고칠 것이 생기면 신세대에 반영한다.
