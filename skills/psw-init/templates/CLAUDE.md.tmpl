@@ -1,0 +1,38 @@
+# {{PROJECT_NAME}}
+
+{{SUMMARY}}. 상세는 docs/srs/01-overview.md
+
+## 작업별 진입 경로
+
+| 작업 | 먼저 읽을 문서 |
+|---|---|
+| 기획 (인터뷰, SRS, REQ) | docs/srs/README.md → docs/req/README.md |
+| 설계 | 해당 FR 파일 → docs/design/architecture.md → 해당 도메인 설계 문서 |
+| 구현 | 해당 FR 파일 → FR ID로 검색한 설계 문서 → docs/conventions.md |
+| 검증 | 해당 FR 파일의 수용 기준 → records/verifications/ |
+| 변경·결정 | records/open/, records/changes/, records/decisions/ |
+
+## 로딩 원칙
+
+- 인덱스(README.md)를 먼저 읽고, 필요한 파일만 읽는다
+- docs/ 전체를 한꺼번에 읽지 않는다
+- records/는 이유나 경위가 필요할 때만 읽는다
+
+## 핵심 규칙
+
+- MUST: 문서를 approved로 바꾸지 않는다. 승인은 사용자만 한다
+- MUST: 하위 단계에서 상위 문서를 고치지 않는다. 해당 단계의 루프를 호출한다
+- MUST: 승인된 내용을 바꿔야 하면 CR을 작성한다
+- MUST: 모르는 것은 추측하지 않고 OPEN으로 등록한다
+- MUST: 테스트를 통과시키려고 테스트를 고치지 않는다
+- NEVER: 시크릿 값을 읽거나 출력하거나 커밋하지 않는다
+- MUST: 커밋에 트레일러(Refs, Decision, CR, Closes, Role)를 단다
+
+## 명령
+
+| 용도 | 명령 |
+|---|---|
+| 개발 서버 | (프로젝트별 결정) |
+| lint·타입 검사 | (프로젝트별 결정) |
+| AC 테스트 | (프로젝트별 결정) |
+| 설계 교차 검증 | (하네스 스크립트, 구축 중) |

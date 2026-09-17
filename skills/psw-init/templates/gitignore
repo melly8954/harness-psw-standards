@@ -1,0 +1,10 @@
+# harness-psw
+.env
+.env.*
+!.env.example
+
+# SRS PDF 등 파생물 (harness-psw 3.2)
+exports/
+
+# FR별 작업 폴더 (harness-psw 9.2)
+.worktrees/

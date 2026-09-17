@@ -1,0 +1,62 @@
+<!-- psw id: SCR-XXX-NNN | refs: FR-XXX-NNN | api: API-XXX-NNN | status: draft -->
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCR-XXX-NNN 화면 이름</title>
+  <!-- UI 패키지의 ui.css. 경로는 이 파일 기준 상대 경로로 바꾼다 -->
+  <link rel="stylesheet" href="{{UI_CSS_PATH}}">
+  <style>
+    /* 목업 전용: 상태 전환 막대. 화면 디자인에는 쓰지 않는다 */
+    .mock-bar { position: sticky; top: 0; z-index: 10; display: flex; gap: .5rem; padding: .5rem 1rem; background: #111; }
+    .mock-bar button { font: inherit; padding: .25rem .75rem; border: 0; border-radius: 4px; cursor: pointer; }
+    .mock-bar button[aria-pressed="true"] { background: #facc15; }
+  </style>
+</head>
+<body>
+  <nav class="mock-bar" aria-label="목업 상태">
+    <button type="button" data-show="default" aria-pressed="true">기본</button>
+    <button type="button" data-show="empty" aria-pressed="false">빈 상태</button>
+    <button type="button" data-show="loading" aria-pressed="false">로딩</button>
+    <button type="button" data-show="error" aria-pressed="false">오류</button>
+  </nav>
+
+  <main class="ui-container ui-stack">
+    <h1>화면 이름</h1>
+
+    <section data-state="default" class="ui-stack">
+      <!-- 기본 상태 -->
+    </section>
+
+    <section data-state="empty" hidden>
+      <div class="ui-empty">
+        <p>내용이 없을 때의 안내</p>
+        <button class="ui-button ui-button--primary" type="button">다음 행동</button>
+      </div>
+    </section>
+
+    <section data-state="loading" hidden>
+      <div class="ui-spinner" role="status" aria-label="불러오는 중"></div>
+    </section>
+
+    <section data-state="error" hidden>
+      <div class="ui-alert ui-alert--danger" role="alert">
+        <p>오류 안내</p>
+        <button class="ui-button ui-button--secondary" type="button">다시 시도</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 목업 전용: 네 가지 상태를 전환한다
+    document.querySelectorAll('.mock-bar button').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.show;
+        document.querySelectorAll('[data-state]').forEach((s) => { s.hidden = s.dataset.state !== target; });
+        document.querySelectorAll('.mock-bar button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      });
+    });
+  </script>
+</body>
+</html>
