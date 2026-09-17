@@ -42,8 +42,8 @@ bash install.sh <프로젝트 경로>
 |---|---|
 | 설계서 | 완료 |
 | `install.sh`, `psw-init` | 완료 |
-| `psw-change` | 예정 |
+| `psw-change` | 완료 |
 | `psw-interview`, `psw-srs`, `psw-req` | 예정 |
 | `psw-design`, `psw-crosscheck` | 예정 |
 | `psw-implement`, 에이전트 3종 | 예정 |
-| 검사 스크립트 | 예정 |
+| 검사 스크립트 | 일부 완료 (next-id, loop-status, find-refs) |
