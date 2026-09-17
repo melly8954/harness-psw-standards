@@ -1,0 +1,4 @@
+# harness-psw
+.env
+.env.*
+!.env.example

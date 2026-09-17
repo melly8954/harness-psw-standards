@@ -212,9 +212,10 @@ SRS ← REQ ← 설계(화면·API·상태) ← 테스트·커밋
 <project>/
   CLAUDE.md                 진입 문서 (0절)
   .claude/                  Claude Code 설정 전용
-    skills/                 하네스 스킬 (10.3)
+    skills/psw-*/           하네스 스킬 (10.3)
     agents/                 하위 에이전트 (9.1)
-    scripts/                검사 스크립트 (10.3)
+    scripts/psw/            검사 스크립트 (10.3)
+    psw-version             설치한 하네스 버전
   docs/
     srs/                    요구사항 정의서 정본 (3.2)
     req/                    요구사항 상세 (3.3)
@@ -905,16 +906,17 @@ agent-harness-standards/
     <skill>/
       SKILL.md
       references/           그 스킬이 만드는 문서의 템플릿, 체크리스트
+      templates/            그 스킬이 프로젝트에 복사하는 파일
   agents/                   implementer.md, reviewer.md, verifier.md
   scripts/                  검사 스크립트
-  templates/
-    project/                프로젝트 골격 (CLAUDE.md, docs/, records/, .env.example, .gitignore, hook·CI 설정)
-    ui-kit/                 UI 패키지 시작 템플릿
 ```
 
-- 문서 템플릿은 그 문서를 만드는 스킬의 `references/`가 소유한다
+- 템플릿은 그 파일을 만드는 스킬이 소유한다
+  - 문서 템플릿, 체크리스트: `references/`
+  - 프로젝트에 그대로 복사하는 파일: `templates/` (예: `psw-init`의 프로젝트 골격, `psw-design`의 UI 패키지 시작 템플릿)
   → 한곳에 모아두면 스킬과 템플릿이 따로 논다
-- 여러 스킬이 함께 쓰는 것(스크립트, 에이전트, 프로젝트 골격)만 최상위에 둔다
+  → 설치 후에는 프로젝트에 복사된 스킬만 접근할 수 있으므로, 템플릿이 스킬 밖에 있으면 찾을 수 없다
+- 여러 스킬이 함께 쓰는 것(스크립트, 에이전트)만 최상위에 둔다
 
 ### 10.2 스킬 목록
 
@@ -922,7 +924,7 @@ agent-harness-standards/
 
 | 단계 | 스킬 | 하는 일 | 설계서 |
 |---|---|---|---|
-| 준비 | `psw-init` | 프로젝트 골격 생성, 에이전트·스크립트·hook 배치 | 0.1, 2절 |
+| 준비 | `psw-init` | 프로젝트 골격 생성 (`CLAUDE.md`, `docs/`, `records/`, `glossary.md`, `.env.example`, `.gitignore`) | 0.1, 2절 |
 | 기획 | `psw-interview` | 주제·레퍼런스 제시, 인터뷰 진행, 원본 기록, OPEN 등록 | 3.1, 부록 A |
 | 기획 | `psw-srs` | SRS 작성, 누락 검사, 기준선 태그, PDF 생성 | 3.2 |
 | 기획 | `psw-req` | SRS → REQ 파생 (FR, `_policy`, 영역 파일, README 인덱스) | 3.3~3.5 |
@@ -942,9 +944,13 @@ agent-harness-standards/
   → 전역에 설치하면 모든 프로젝트에 걸려 다른 방법론과 섞인다
   → `psw-init`도 프로젝트에 먼저 있어야 실행할 수 있으므로, 첫 설치는 스크립트로 한다
 - 복사 위치
-  - 스킬: `.claude/skills/`
+  - 스킬: `.claude/skills/psw-*/`
   - 에이전트: `.claude/agents/`
-  - 검사 스크립트: `.claude/scripts/`
+  - 검사 스크립트: `.claude/scripts/psw/`
+- 다시 설치하면 하네스가 소유한 파일(`psw-*` 스킬, 하네스 에이전트 3개, `scripts/psw/`)만 교체하고, 프로젝트의 다른 파일은 건드리지 않는다
+- 설치한 하네스 버전(커밋 해시)을 `.claude/psw-version`에 남긴다
+- hook·CI 설정은 설치 시 넣지 않는다
+  → 커밋 검사 도구가 프로젝트별 결정 항목(1.5)이므로 구현 착수 전에 설정한다
 
 ### 10.4 구축 단계에서 정할 것
 
