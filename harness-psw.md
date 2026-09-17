@@ -56,7 +56,7 @@
    10.4 구축 단계에서 정할 것
    10.5 검사 스크립트
 부록 A. 인터뷰 질문 목록
-부록 B. 설계 문서별 필수 항목 (초안)
+부록 B. 설계 문서별 필수 항목
 부록 C. CLAUDE.md 템플릿
 ```
 
@@ -452,9 +452,18 @@ req/functional/auth/
   - 예외: API 문서는 허용 역할을 적는다
     → 구현 에이전트가 API 문서 하나만 읽고 권한 검사를 넣을 수 있다. 어긋남은 교차 검증(4.3)으로 잡는다
   - HTML 목업은 frontmatter 대신 파일 맨 위 주석에 메타 정보를 적는다
-    → 예: `<!-- id: SCR-ORD-001 | 근거: FR-ORD-001 | API: API-ORD-001 | status: draft -->`
+    → 형식: `<!-- psw id: SCR-ORD-001 | refs: FR-ORD-001 | api: API-ORD-001, API-ORD-003 | status: draft -->`
   - 목업은 기본, 빈 상태, 로딩, 오류 네 가지 상태를 보여준다
-- 문서별 필수 항목은 부록 B에 둔다
+- 문서별 필수 항목과 템플릿: `skills/psw-design/references/`
+- 교차 검증 스크립트가 읽는 형식
+
+| 문서 | 형식 |
+|---|---|
+| `ui/ia.md` | 화면 목록 표의 행: `\| SCR-xxx-NNN \| 이름 \| 경로 \| 접근 역할 \| refs \|` |
+| 목업 HTML | 맨 위 메타 주석 (위 형식) |
+| `api/<domain>.md` | API마다 제목 `### API-xxx-NNN <메서드> <경로>`, 바로 아래 `- refs: <요구사항 ID>` |
+| `database/erd.md` | 테이블마다 제목 `### <테이블 이름>`. 상태 컬럼 설명에 `state/<entity>.md`를 적는다 |
+| `ui/components.md` | 컴포넌트 표에 CSS 클래스 열. 클래스는 `ui-` 접두사 |
 
 ### 4.2 설계 문서의 축
 
@@ -517,7 +526,11 @@ req/functional/auth/
   - `ui-rules.md`: 사용 규칙과 이유
   - `components.md`: 이름 → 경로 → 용도 목록 (가능하면 소스에서 자동 생성)
 - UI 패키지 경로 (프로젝트별 결정, 1.5)
-- 하네스는 UI 패키지 시작 템플릿을 제공한다. 템플릿 내용 (구축 단계, 10.4)
+- 하네스는 UI 패키지 시작 템플릿을 제공한다: `skills/psw-design/templates/ui-kit/`
+  - `tokens/tokens.json`: 색, 타이포, 간격, 반경, 그림자, 브레이크포인트
+  - `scripts/build-tokens.mjs`: `tokens.json` → `dist/tokens.css` (CSS 변수). 의존성 없는 Node 스크립트
+  - `css/`: 기본 스타일, 레이아웃 프리미티브, 공통 컴포넌트 클래스 (`ui-` 접두사)
+  - 기술 스택의 UI 라이브러리를 쓰기로 하면 컴포넌트 클래스 대신 그 라이브러리를 `components.md`에 대응시킨다
 
 ### 4.6 상태 전이 문서
 
@@ -991,7 +1004,7 @@ agent-harness-standards/
 | 기획 | `psw-interview` | 주제·레퍼런스 제시, 인터뷰 진행, 원본 기록, OPEN 등록 | 3.1, 부록 A |
 | 기획 | `psw-srs` | SRS 작성, 누락 검사, 기준선 태그, PDF 생성 | 3.2 |
 | 기획 | `psw-req` | SRS → REQ 파생 (FR, `_policy`, 영역 파일, README 인덱스) | 3.3~3.5 |
-| 설계 | `psw-design` | 프로젝트별 결정 항목 채우기, 설계 문서·UI 기초·목업 작성 | 1.5, 4절, 부록 B |
+| 설계 | `psw-design` | 프로젝트별 결정 항목 채우기, 설계 문서·UI 기초·목업 작성 | 1.5, 4절 |
 | 설계 | `psw-crosscheck` | 교차 검증 실행 (스크립트 + 검토자) | 4.3 |
 | 구현 | `psw-implement` | FR 단위 흐름 진행 (검증자 → 구현자 → 검토자 → 검증자 → 병합 확인) | 5절, 9절 |
 | 공통 | `psw-change` | 피드백 루프: OPEN·CR·DEC 작성과 처리, 영향 분석, 종료 조건 확인 | 7절, 8절 |
@@ -1017,7 +1030,6 @@ agent-harness-standards/
 
 ### 10.4 구축 단계에서 정할 것
 
-- UI 패키지 시작 템플릿 내용 (4.5)
 - 편집 시점 경로 차단 hook의 가능 여부 (9.4)
 - 검사 스크립트 (만든 것은 10.5)
   - 커밋 메시지 검사 (5.4)
@@ -1036,6 +1048,7 @@ agent-harness-standards/
 | `find-refs.sh` | ID를 참조하는 곳을 찾는다 (영향 분석) | 1.2, 7.1 |
 | `checklist-coverage.sh` | 인터뷰 체크리스트의 필수 항목이 답·OPEN·해당 없음 중 하나로 처리됐는지 확인한다 | 3.1 |
 | `req-sync.sh` | SRS의 요구사항 ID와 REQ 파일이 1:1로 맞는지 확인한다 | 3.2, 3.3 |
+| `crosscheck.sh` | 설계 교차 검증의 스크립트 항목(1, 2, 3, 7, 8, 10, 11, 12)을 실행한다 | 4.3 |
 
 - 스크립트는 bash로 쓴다
   → 기술 스택과 상관없이 git이 있는 환경이면 실행된다
@@ -1044,22 +1057,9 @@ agent-harness-standards/
 
 > `skills/psw-interview/references/checklist.md`로 옮겼다. 그 파일이 정본이다.
 
-## 부록 B. 설계 문서별 필수 항목 (초안)
+## 부록 B. 설계 문서별 필수 항목
 
-> 설계 스킬을 만들 때 템플릿으로 옮긴다 (4.1).
-> 공통 규칙(frontmatter, 섹션 순서, 정본 참조)은 4.1을 따른다.
-
-| 문서 | 필수 항목 |
-|---|---|
-| `architecture.md` | 구성도(mermaid), 구성 요소별 책임, 기술 스택(근거 `CON-`), 모듈 경계와 의존 방향, 배포 단위, 적용 NFR |
-| `security.md` | 인증 흐름, 인가 모델(`req/actors.md` 참조), 토큰·세션 저장 방식, 암호화·마스킹 대상 필드, 감사 로그, 근거 `SEC-` |
-| `database/erd.md` | ERD(mermaid), 테이블별 컬럼(이름·타입·null·기본값·설명), PK·FK·인덱스·유니크, 삭제 정책(soft/hard), 명명 규칙. 상태 컬럼은 state 문서 참조 |
-| `api/_conventions.md` | API 공통 규약: 오류 응답 형식, 인증 헤더, 페이징, 버전 |
-| `api/<domain>.md` | API별: ID, 메서드·경로, 근거 `FR`, 허용 역할, 요청·응답 스키마, 오류(코드·조건), 유발하는 상태 전이, 멱등성 |
-| `integration/<system>.md` | 근거 `INT-`, 호출 방향(우리 → 외부 / 웹훅), 인증 방식, 타임아웃·재시도·멱등 키, 실패 처리와 보상, 테스트 환경 |
-| `state/<entity>.md` | 4.6을 따른다 |
-| `ui/ia.md` | 화면 목록(SCR ID, 이름, 경로, 접근 역할, 근거 `FR`), 메뉴 계층, 화면 흐름 |
-| `ui/screens/<domain>/<screen>.html` | 맨 위 메타 주석(4.1), 기본·빈 상태·로딩·오류 화면 |
+> `skills/psw-design/references/`로 옮겼다. 그 파일들이 정본이다.
 
 ## 부록 C. CLAUDE.md 템플릿
 

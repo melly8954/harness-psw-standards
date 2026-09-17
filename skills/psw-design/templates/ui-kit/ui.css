@@ -1,0 +1,5 @@
+/* UI 패키지 진입점. 목업과 프론트는 이 파일을 불러온다. */
+@import url("dist/tokens.css");
+@import url("css/base.css");
+@import url("css/layout.css");
+@import url("css/components.css");
