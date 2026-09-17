@@ -2,7 +2,6 @@
 
 > 신규 프로젝트용 하네스 설계서다. 기존 하네스를 대체하기 위해 정리 중이다.
 > `(프로젝트별 결정)`은 프로젝트마다 채우는 항목이다 (1.5).
-> `(구축 단계)`는 하네스를 만들면서 정하는 항목이다 (10.4).
 
 ## 목차
 
@@ -53,7 +52,7 @@
    10.1 저장소 구조
    10.2 스킬 목록
    10.3 설치
-   10.4 구축 단계에서 정할 것
+   10.4 구축 후 확인할 것
    10.5 검사 스크립트
 부록 A. 인터뷰 질문 목록
 부록 B. 설계 문서별 필수 항목
@@ -104,6 +103,9 @@
   - `draft`: 작성 중이거나 수정됨. 에이전트가 바꾼다
   - `approved`: 사용자 승인. 다음 단계의 입력으로 쓸 수 있다
 - MUST: `approved`로는 사용자만 바꾼다
+  - 승인은 사용자가 직접 `approve.sh <경로>`를 실행해서 한다 (Claude Code 입력창에서는 `! bash .claude/scripts/psw/approve.sh <경로>`)
+  - 에이전트(메인 세션 포함)가 `status: approved`를 쓰거나 `approve.sh`를 실행하면 hook(`guard-paths.sh`)이 막는다
+  - `approve.sh`는 미결·끊긴 자리표시가 남은 파일을 건너뛴다
 - 적용 대상은 REQ와 설계 문서다
   → SRS는 폴더 전체를 git 태그로 승인하므로 파일별 상태를 두지 않는다
 - `approved` 문서를 수정하면 `draft`로 되돌리고 다시 승인받는다
@@ -221,6 +223,10 @@ SRS ← REQ ← 설계(화면·API·상태) ← 테스트·커밋
     agents/                 하위 에이전트 (9.1)
     scripts/psw/            검사 스크립트 (10.3)
     psw-version             설치한 하네스 버전
+    settings.json           승인 보호·역할 경로 hook (psw-init)
+    psw.conf                프로젝트 설정: 테스트 경로 패턴 (psw-design)
+  .githooks/commit-msg      커밋 메시지 검사 (psw-implement)
+  .worktrees/<FR-ID>/       FR별 작업 폴더 (커밋하지 않음, 9.2)
   docs/
     srs/                    요구사항 정의서 정본 (3.2)
     req/                    요구사항 상세 (3.3)
@@ -725,7 +731,7 @@ Closes: OPEN-021
 | `records/` | 없음 |
 | 하위 에이전트가 만든 커밋 | `Role:` |
 
-- 강제 수단
+- 강제 수단 (기본안: 하네스 스크립트 `check-commit-msg.sh`를 `.githooks/commit-msg`에 연결하고 `core.hooksPath`로 켠다)
   - commit-msg hook: 형식, 길이, 필수 트레일러, ID 존재 여부를 검사한다
   - CI: 같은 검사를 다시 실행한다
     → hook은 `--no-verify`로 건너뛸 수 있다
@@ -910,8 +916,7 @@ Closes: OPEN-021
   → 운영해 보고 비용 대비 품질을 확인한 뒤 역할별 조정을 검토한다
 - 동시에 실행하는 구현자는 2개다
 - 에이전트 파일은 오케스트레이터를 뺀 3개(`implementer.md`, `reviewer.md`, `verifier.md`)다
-  - 하네스 저장소에 두고, 프로젝트 초기화 때 `.claude/agents/`로 복사한다
-  - 설계서 확정 후 구축 단계에서 스킬과 함께 만든다
+  - 하네스 저장소 `agents/`에 두고, `install.sh`가 `.claude/agents/`로 복사한다
 
 ### 9.2 흐름
 
@@ -926,6 +931,9 @@ Closes: OPEN-021
   → 사용자 확인 (FR마다) → 병합
 ```
 
+- FR마다 작업 폴더를 만든다: `git worktree add .worktrees/<FR-ID> -b feat/<FR-ID>-<요약>`
+  → 동시에 2개를 진행해도 서로의 파일이 섞이지 않는다
+- 병합 전 검사: `check-role-paths.sh`, 커밋마다 `check-commit-msg.sh --commit`
 - 병합 전 사용자 확인은 FR마다 받는다
 - 확인 요청은 아래 요약 형식으로 한다
 
@@ -955,19 +963,23 @@ Closes: OPEN-021
 
 ### 9.4 권한 강제
 
+- 두 겹으로 막는다: 편집 시점(hook)과 커밋 시점(트레일러 검사)
 - 도구 제한: 에이전트 파일의 `tools` 필드로 막는다. 검토자에게는 읽기 도구만 준다
   → 검토자에게 Bash를 주면 파일을 고칠 수 있으므로, diff는 오케스트레이터가 뽑아서 넘긴다
-- 경로 제한: `tools` 필드로는 경로 단위 제한이 안 된다
-  - 지시로 제한한다
-  - 하위 에이전트의 커밋에는 트레일러 `Role:`을 단다 (5.4)
-  - 병합 전에 스크립트가 `Role`별 허용 경로와 커밋의 변경 경로를 비교한다
+  - 검증자는 화면 검증에 브라우저 도구가 필요하므로 `tools`를 제한하지 않고 hook으로 경로만 막는다
+- 편집 시점: 프로젝트 `.claude/settings.json`의 PreToolUse hook이 `guard-paths.sh hook`을 실행한다
+  - hook 입력의 `agent_type`(하위 에이전트 이름)으로 역할을 알아낸다
+  - 경로는 파일이 속한 git 작업 폴더 기준으로 판단한다 (FR별 worktree 안의 파일도 같은 규칙)
+  - Bash로 하는 편집은 hook이 판단하지 못하므로 커밋 시점 검사가 막는다
+- 커밋 시점: 하위 에이전트의 커밋에는 트레일러 `Role:`을 달고, 병합 전에 `check-role-paths.sh`가 역할별 허용 경로와 변경 경로를 비교한다
 
 | Role | 허용 경로 |
 |---|---|
-| `implementer` | 구현 코드 (테스트 파일, `docs/`, `records/` 제외) |
+| `implementer` | 테스트 파일, `docs/`, `records/`, `.claude/`, `CLAUDE.md`를 뺀 나머지 |
 | `verifier` | 테스트 파일, `records/verifications/` |
+| `reviewer` | 없음 |
 
-  - 편집 시점에 hook으로 막는 방법은 hook이 요청한 에이전트를 구분할 수 있는지 확인한 뒤 추가한다 (구축 단계, 10.4)
+- 테스트 파일 판단: `.claude/psw.conf`의 `PSW_TEST_GLOBS`
 
 ## 10. 하네스 저장소 구성
 
@@ -1000,7 +1012,7 @@ agent-harness-standards/
 
 | 단계 | 스킬 | 하는 일 | 설계서 |
 |---|---|---|---|
-| 준비 | `psw-init` | 프로젝트 골격 생성 (`CLAUDE.md`, `docs/`, `records/`, `glossary.md`, `.env.example`, `.gitignore`) | 0.1, 2절 |
+| 준비 | `psw-init` | 프로젝트 골격 생성 (`CLAUDE.md`, `docs/`, `records/`, `glossary.md`, `.env.example`, `.gitignore`, `.gitattributes`), 승인 보호 hook | 0.1, 1.1, 2절 |
 | 기획 | `psw-interview` | 주제·레퍼런스 제시, 인터뷰 진행, 원본 기록, OPEN 등록 | 3.1, 부록 A |
 | 기획 | `psw-srs` | SRS 작성, 누락 검사, 기준선 태그, PDF 생성 | 3.2 |
 | 기획 | `psw-req` | SRS → REQ 파생 (FR, `_policy`, 영역 파일, README 인덱스) | 3.3~3.5 |
@@ -1026,18 +1038,13 @@ agent-harness-standards/
 - 다시 설치하면 하네스가 소유한 파일(`psw-*` 스킬, 하네스 에이전트 3개, `scripts/psw/`)만 교체하고, 프로젝트의 다른 파일은 건드리지 않는다
 - 설치한 하네스 버전(커밋 해시)을 `.claude/psw-version`에 남긴다
 - hook·CI 설정은 설치 시 넣지 않는다
-  → 커밋 검사 도구가 프로젝트별 결정 항목(1.5)이므로 구현 착수 전에 설정한다
+  - 승인 보호·역할 경로 hook: `psw-init`이 사용자 동의를 받아 `.claude/settings.json`에 넣는다
+  - 커밋 검사 hook·CI: 커밋 검사 도구가 프로젝트별 결정 항목(1.5)이므로 `psw-implement` 준비 단계에서 넣는다
 
-### 10.4 구축 단계에서 정할 것
+### 10.4 구축 후 확인할 것
 
-- 편집 시점 경로 차단 hook의 가능 여부 (9.4)
-- 검사 스크립트 (만든 것은 10.5)
-  - 커밋 메시지 검사 (5.4)
-  - 교차 검증 (4.3)
-  - RTM 생성 (1.2)
-  - 문서 크기 신호 (1.3)
-  - 역할별 경로 검사 (9.4)
-  - `approved` 변경 검사 (1.1)
+- 스킬 절차는 스크립트처럼 자동 시험할 수 없다. 첫 실제 프로젝트에서 단계마다 확인하고 설계서와 스킬을 고친다
+- 편집 시점 hook은 워크스페이스 신뢰를 수락해야 동작한다. 첫 실행 때 동작을 확인한다
 
 ### 10.5 검사 스크립트
 
@@ -1049,6 +1056,12 @@ agent-harness-standards/
 | `checklist-coverage.sh` | 인터뷰 체크리스트의 필수 항목이 답·OPEN·해당 없음 중 하나로 처리됐는지 확인한다 | 3.1 |
 | `req-sync.sh` | SRS의 요구사항 ID와 REQ 파일이 1:1로 맞는지 확인한다 | 3.2, 3.3 |
 | `crosscheck.sh` | 설계 교차 검증의 스크립트 항목(1, 2, 3, 7, 8, 10, 11, 12)을 실행한다 | 4.3 |
+| `guard-paths.sh` | 편집 시점 hook: 역할별 경로와 approved 전환을 막는다. 검사 모드로도 쓴다 | 1.1, 9.4 |
+| `approve.sh` | 사용자가 직접 실행해 문서를 approved로 바꾼다 | 1.1 |
+| `check-commit-msg.sh` | 커밋 메시지 형식·길이·트레일러·ID 존재·approved 문서 변경을 검사한다 | 5.4, 1.1 |
+| `check-role-paths.sh` | Role 트레일러 커밋의 변경 경로를 검사한다 | 9.4 |
+| `rtm.sh` | 추적 매트릭스를 만든다 | 1.2 |
+| `doc-size.sh` | 문서 크기 신호를 보여준다 (토큰 추정) | 1.3 |
 
 - 스크립트는 bash로 쓴다
   → 기술 스택과 상관없이 git이 있는 환경이면 실행된다

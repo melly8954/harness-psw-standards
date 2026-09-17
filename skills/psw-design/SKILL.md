@@ -75,15 +75,21 @@ description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한�
 2. 사용자에게 도메인 설계 승인을 요청한다
    - 요약: 화면 수, API 수, 추가·변경한 테이블, 상태 전이 문서, 남은 OPEN, 교차 검증 결과
    - 목업은 파일 경로를 알려 사용자가 브라우저로 열어보게 한다
-3. 승인 시점의 모양을 남겨야 하면 목업 스크린샷을 `records/`에 저장한다
+3. 승인은 사용자가 입력창에서 직접 실행한다: `! bash .claude/scripts/psw/approve.sh <설계 문서·목업 경로>`
+   - 에이전트의 승인 시도는 hook이 막는다
+4. 승인 시점의 모양을 남겨야 하면 목업 스크린샷을 `records/`에 저장한다
 
 ### 6. 구현 준비 (구현 착수 전 한 번)
 
 1. 프로젝트별 결정을 사용자와 정하고 각각 DEC로 남긴다
    - 시크릿 저장소 도구 → `architecture.md` 배포 단위
    - lint, 포맷, 커밋 검사, 시크릿 스캔, AC 테스트 도구 → `docs/conventions.md` (`references/conventions.md`에서 시작)
+     - 커밋 검사 도구의 기본안은 하네스 스크립트(`check-commit-msg.sh`)다. 스택과 상관없이 동작한다
    - 개발 서버, lint, AC 테스트 명령 → `CLAUDE.md` 명령 표
-2. 다음 단계: `psw-implement`
+   - AC 테스트 파일 경로 → `.claude/psw.conf`의 `PSW_TEST_GLOBS` (`templates/psw.conf`에서 시작)
+     → 역할별 경로 검사가 이 패턴으로 테스트 파일을 가린다
+2. 커밋 검사 hook과 CI는 `psw-implement` 준비 단계에서 설정한다 (`templates/githooks/`, `templates/github-workflow-psw.yml`)
+3. 다음 단계: `psw-implement`
 
 ## 커밋
 

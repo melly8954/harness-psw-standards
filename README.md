@@ -41,9 +41,12 @@ bash install.sh <프로젝트 경로>
 | 구성 | 상태 |
 |---|---|
 | 설계서 | 완료 |
-| `install.sh`, `psw-init` | 완료 |
-| `psw-change` | 완료 |
-| `psw-interview`, `psw-srs`, `psw-req` | 완료 |
-| `psw-design`, `psw-crosscheck` | 완료 |
-| `psw-implement`, 에이전트 3종 | 예정 |
-| 검사 스크립트 | 일부 완료 (next-id, loop-status, find-refs, checklist-coverage, req-sync, crosscheck) |
+| 스킬 8종 (`psw-init`, `psw-interview`, `psw-srs`, `psw-req`, `psw-design`, `psw-crosscheck`, `psw-implement`, `psw-change`) | 완료 |
+| 에이전트 3종 (`implementer`, `reviewer`, `verifier`) | 완료 |
+| 검사 스크립트 12종 | 완료 |
+| 실제 프로젝트 적용 검증 | 예정 (설계서 10.4) |
+
+## 승인
+
+- 문서 승인은 사용자가 직접 한다: `! bash .claude/scripts/psw/approve.sh <경로>`
+- 에이전트의 승인 시도는 `psw-init`이 설정한 hook이 막는다

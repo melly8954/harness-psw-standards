@@ -81,6 +81,9 @@ description: 승인된 harness-psw SRS에서 요구사항 상세(REQ)를 파생�
 1. 도메인 단위로 승인을 요청할 수 있다
    - 요약: 도메인별 FR 수, 남은 OPEN(`deferred` 포함), 정책 항목 수
 2. 사용자가 승인한 파일만 `status: approved`가 된다
+   - 승인은 사용자가 입력창에서 직접 실행한다: `! bash .claude/scripts/psw/approve.sh docs/req/functional/<domain>`
+   - 에이전트의 승인 시도는 hook이 막는다
+   - 승인 커밋 트레일러: `Refs: <도메인 접두사>`
 3. 다음 단계: `psw-design`
 
 ## 커밋
