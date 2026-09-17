@@ -1,0 +1,10 @@
+---
+status: draft
+source: docs/srs/04-requirements/<area>.md
+---
+
+# <영역 이름>
+
+| ID | 요구 | 기준 | 확인 방법 | 적용 범위 |
+|---|---|---|---|---|
+| <NFR-PERF-001> | <요구> | <측정 가능한 수치, 모르면 [OPEN-NNN]> | <부하 테스트 등> | 전체 / 개별 |

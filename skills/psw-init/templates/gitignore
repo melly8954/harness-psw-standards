@@ -2,3 +2,6 @@
 .env
 .env.*
 !.env.example
+
+# SRS PDF 등 파생물 (harness-psw 3.2)
+exports/

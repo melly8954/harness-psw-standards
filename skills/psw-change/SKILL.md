@@ -25,7 +25,7 @@ description: harness-psw 피드백 루프를 처리한다. 미결(OPEN) 등록·
   - 소유 스킬이 아직 설치되지 않았으면 이 스킬에서 직접 반영하고, 그 사실을 보고한다
 - ID는 `.claude/scripts/psw/next-id.sh OPEN|CR|DEC`로 발급한다. 직접 번호를 매기지 않는다
 - 파일 형식은 `references/open.md`, `references/cr.md`, `references/dec.md`를 따른다
-- 대화에서 사용자의 답을 받으면 원문을 `records/interviews/YYYY-MM-DD.md`에 남긴다
+- 대화에서 사용자의 답을 받으면 원문을 `records/interviews/YYYY-MM-DD.md`에 남긴다. 형식은 `psw-interview`의 `references/interview.md`를 따른다
 
 ## 절차
 
