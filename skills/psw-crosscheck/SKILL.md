@@ -18,7 +18,7 @@ description: harness-psw 설계 문서(화면·API·ERD·상태 전이·연동)�
 | 5 | API가 유발하는 상태 전이가 state 전이 표에 있고, 사용자 이벤트마다 대응 API가 있다 | 검토자 |
 | 6 | API 허용 역할과 IA 접근 역할이 `docs/req/actors.md`와 일치한다 | 검토자 |
 | 7 | state 문서마다 ERD가 참조한다 | 스크립트 |
-| 8 | 목업이 `components.md`의 클래스만 쓴다 | 스크립트 |
+| 8 | 목업의 `data-component` 값이 `components.md`에 있다 | 스크립트 |
 | 9 | 연동 실패 처리가 API 오류나 상태 전이에 반영돼 있다 | 검토자 |
 | 10 | 화면·API의 refs가 비어 있지 않다 | 스크립트 |
 | 11 | 쓰이지 않는 테이블·API (경고) | 스크립트 |

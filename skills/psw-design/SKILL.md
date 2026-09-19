@@ -1,24 +1,30 @@
 ---
 name: psw-design
-description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한다. 아키텍처·보안 설계, UI 기초(토큰·공통 컴포넌트·IA), 도메인별 ERD·상태 전이·API·연동·HTML 목업, 구현 착수 전 프로젝트별 결정(도구·경로)을 채운다. REQ가 승인된 도메인의 설계를 시작하거나 설계를 고칠 때 사용한다.
+description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한다. 아키텍처·보안 설계, UI 기초(프론트 키트의 테마·컴포넌트 적용, IA), 도메인별 ERD·상태 전이·API·연동·HTML 목업, 구현 착수 전 프로젝트별 결정(도구·경로)을 채운다. REQ가 승인된 도메인의 설계를 시작하거나 설계를 고칠 때 사용한다.
 ---
 
 # psw-design
 
-`docs/design/`, UI 패키지, `docs/conventions.md`를 쓴다.
+`docs/design/`, 프론트 테마·컴포넌트, `docs/conventions.md`를 쓴다.
+
+UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-front`)의 테마와 컴포넌트를 가져와 쓴다.
 
 ## 입력과 출력
 
 | 입력 | 출력 |
 |---|---|
 | `approved` REQ (도메인 단위) | `docs/design/` 설계 문서, HTML 목업 |
-| SRS `05-constraints.md` (기술 스택) | UI 패키지 (`templates/ui-kit/`에서 시작) |
+| SRS `05-constraints.md` (기술 스택) | 프론트 테마와 컴포넌트 (프론트 키트에서 가져옴) |
+| 프론트 키트 (`harness-psw-front`, 태그) | `docs/design/ui/components.md` |
 | DEC (설계 결정) | `docs/conventions.md`, `CLAUDE.md` 명령 (구현 준비) |
 
 ## 규칙
 
 - 전제: SRS 기준선 태그가 있고, 설계할 도메인의 REQ가 `approved`다
-- 템플릿: `references/*.md`, `references/screen.html`
+- 템플릿: `references/*.md`
+- 프론트 키트
+  - 저장소: `https://github.com/melly8954/harness-psw-front.git` (비공개). 로컬 사본 `C:\psw\github\harness-psw-front`가 있으면 그 경로를 써도 된다
+  - 목업 템플릿, 컴포넌트 조각, 기본 컴포넌트 목록, 프레임워크별 적용 절차는 키트가 소유한다. 하네스에 복사해 두지 않는다
 - 순서: 아키텍처 → UI 기초 → DB · API · 화면. DB · API · 화면은 맞물려 진행하고 교차 검증으로 맞춘다
 - 문서 축
   - 전역: `architecture.md`, `security.md`, `database/erd.md`, `ui/ia.md`, `ui/ui-rules.md`, `ui/components.md`, `api/_conventions.md`
@@ -27,10 +33,10 @@ description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한�
   - 엔터티별: `state/<entity>.md` (상태가 3개 이상이거나, 시간·외부 이벤트로 상태가 바뀌는 엔터티)
 - 모든 설계 문서의 frontmatter에 `status`와 `refs`(근거 요구사항 ID)를 적는다
 - 다른 문서가 정본인 값은 옮겨 적지 않고 참조한다
-  - 상태값: `state/<entity>.md` / 토큰·컴포넌트: UI 패키지 / 정책 수치: `_policy.md` / 역할별 권한: `docs/req/actors.md`
+  - 상태값: `state/<entity>.md` / 테마·컴포넌트: 프론트 코드 (Next: `app/theme.css`, `components/ui/`) / 정책 수치: `_policy.md` / 역할별 권한: `docs/req/actors.md`
   - 예외: API 문서의 허용 역할은 적는다. 어긋남은 교차 검증으로 잡는다
 - 교차 검증 스크립트가 읽는 형식을 지킨다 (각 템플릿의 주석 참고)
-  - `ia.md` 화면 목록 행, 목업 첫 줄 메타 주석, API 제목과 `- refs:` 줄, ERD의 `### <테이블>` 제목, `components.md`의 `ui-` 클래스
+  - `ia.md` 화면 목록 행, 목업 첫 줄 메타 주석, API 제목과 `- refs:` 줄, ERD의 `### <테이블>` 제목, 목업의 `data-component`와 `components.md` 첫 열
 - ID는 `.claude/scripts/psw/next-id.sh SCR-<도메인>`, `next-id.sh API-<도메인>`으로 발급한다
 - 요구사항에 결함이 있으면 설계에서 고치지 않는다. `psw-change`로 기획 루프를 호출한다
 - 모르는 것은 `psw-change`로 OPEN을 등록한다
@@ -43,14 +49,18 @@ description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한�
 
 1. `05-constraints.md`의 기술 스택과 적용 NFR·SEC를 읽는다
 2. `architecture.md`, `security.md`를 쓴다
-3. 프로젝트별 결정: UI 패키지 경로를 사용자에게 정하게 하고 DEC로 남긴다
+3. 프로젝트별 결정: 프론트 키트의 프레임워크, 태그, 테마를 사용자에게 정하게 하고 DEC로 남긴다
+   - 키트에 없는 프레임워크면 멈추고 알린다. 키트에 프레임워크를 먼저 추가한다
 
 ### 2. UI 기초 (전역, 첫 도메인에서 만들고 이후 갱신)
 
-1. `templates/ui-kit/`을 UI 패키지 경로로 복사한다
-   - 기술 스택의 UI 라이브러리를 쓰기로 했으면 사용자와 정하고, `components.md`에 라이브러리 컴포넌트를 대응시킨다
-2. 사용자와 토큰 값(색, 글꼴 등)을 정해 `tokens/tokens.json`을 고치고 `node scripts/build-tokens.mjs`로 빌드한다
-3. `ui/ui-rules.md`, `ui/components.md`를 쓴다
+1. 프론트 키트를 고른 태그로 임시 폴더에 가져온다
+   - `git clone --depth 1 --branch <태그> <키트 저장소> <임시 폴더>`
+2. 키트의 `web/frameworks/<프레임워크>/README.md` 절차를 따른다
+   - 프레임워크 초기화, UI 라이브러리 초기화, 테마 적용, 컴포넌트 추가
+   - 키트의 `web/components.md`를 `docs/design/ui/components.md`로 복사하고, 쓰지 않을 컴포넌트는 뺀다
+3. `ui/ui-rules.md`를 쓴다
+   - 커스터마이즈는 테마 변수로만 한다. 컴포넌트 코드의 스타일을 직접 바꾸지 않는다
 4. `ui/ia.md`에 화면 목록, 메뉴 계층, 화면 흐름을 쓴다
    - 화면 ID는 사용자가 보는 화면 단위다. 모달과 단계형 폼의 각 단계도 화면이다
 
@@ -61,9 +71,11 @@ description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한�
 3. `api/_conventions.md`(없으면)와 `api/<domain>.md`를 쓴다
 4. 외부 연동이 있으면 `integration/<system>.md`를 쓰고, 실패 처리를 API 오류나 상태 전이에 반영한다
 5. 화면마다 `ui/screens/<domain>/<screen>.html` 목업을 만든다
-   - `references/screen.html`에서 시작하고, `{{UI_CSS_PATH}}`를 UI 패키지 `ui.css`의 상대 경로로 바꾼다
+   - 키트의 `web/mockup/screen.html`에서 시작하고, `{{THEME_CSS_PATH}}`를 프로젝트 테마 파일의 상대 경로로 바꾼다
+   - 컴포넌트는 키트의 `web/mockup/snippets.md` 조각을 그대로 쓰고, `data-component`를 단다
    - 기본, 빈 상태, 로딩, 오류 네 가지 상태를 채운다
-   - `components.md`에 있는 클래스만 쓴다. 새 컴포넌트가 필요하면 UI 패키지와 `components.md`에 먼저 추가한다
+   - `components.md`에 있는 컴포넌트만 쓴다. 새 컴포넌트가 필요하면 `components.md`에 먼저 추가하고 프로젝트에 컴포넌트를 추가한다
+   - 목업은 인터넷 연결이 있어야 제대로 보인다 (Tailwind를 CDN에서 불러온다)
 
 ### 4. 교차 검증
 
@@ -78,6 +90,7 @@ description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한�
 3. 승인은 사용자가 입력창에서 직접 실행한다: `! bash .claude/scripts/psw/approve.sh <설계 문서·목업 경로>`
    - 에이전트의 승인 시도는 hook이 막는다
 4. 승인 시점의 모양을 남겨야 하면 목업 스크린샷을 `records/`에 저장한다
+5. 키트의 조각과 설치한 컴포넌트의 클래스가 다르면 키트를 고치도록 사용자에게 알린다
 
 ### 6. 구현 준비 (구현 착수 전 한 번)
 

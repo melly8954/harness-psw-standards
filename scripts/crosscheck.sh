@@ -4,7 +4,7 @@
 #   2  NFR·SEC·INT가 설계 문서 어딘가에서 참조된다
 #   3  목업 메타의 API ID가 API 문서에 있다
 #   7  state 문서마다 ERD가 참조한다
-#   8  목업이 components.md에 있는 클래스만 쓴다
+#   8  목업의 data-component 값이 components.md에 있다
 #   10 화면·API의 refs가 비어 있지 않다
 #   11 (경고) API가 쓰지 않는 테이블, 목업이 쓰지 않는 API
 #   12 설계 문서가 참조하는 ID가 실제로 정의돼 있다
@@ -59,7 +59,9 @@ meta_field() { # meta_field <파일> <키>
     | sed -nE "s/^[[:space:]]*(<!--[[:space:]]*psw[[:space:]]+)?$2:[[:space:]]*//p" | sed -E 's/[[:space:]]*-->.*$//; s/[[:space:]]*$//' || true
 }
 
-component_classes="$(grep -oE '`ui-[a-z0-9-]+`' "$D/ui/components.md" 2>/dev/null | tr -d '`' | uniq_lines || true)"
+# components.md 표의 첫 열 (영문 대문자로 시작하는 컴포넌트 이름)
+component_names="$(grep -oE '^\|[[:space:]]*[A-Z][A-Za-z0-9]*[[:space:]]*\|' "$D/ui/components.md" 2>/dev/null \
+  | sed -E 's/^\|[[:space:]]*//; s/[[:space:]]*\|$//' | uniq_lines || true)"
 
 has_id() { grep -qxF "$1" <<<"$2"; }
 
@@ -105,14 +107,13 @@ for f in "$D"/state/*.md; do
 done
 
 # ---------- 8 ----------
-echo "[8] 목업이 components.md의 클래스만 쓴다"
+echo "[8] 목업의 data-component 값이 components.md에 있다"
 while IFS= read -r f; do
   [[ -z "$f" ]] && continue
-  used="$(grep -oE 'class="[^"]*"' "$f" | sed -E 's/^class="//; s/"$//' | tr ' ' '\n' \
-    | grep -E '^ui-' | sed -E 's/(--|__).*$//' | uniq_lines || true)"
+  used="$(grep -oE 'data-component="[^"]*"' "$f" | sed -E 's/^data-component="//; s/"$//' | uniq_lines || true)"
   while IFS= read -r c; do
     [[ -z "$c" ]] && continue
-    has_id "$c" "$component_classes" || err "$f 가 components.md에 없는 클래스 $c 사용"
+    has_id "$c" "$component_names" || err "$f 가 components.md에 없는 컴포넌트 $c 사용"
   done <<<"$used"
 done <<<"$mockups"
 

@@ -30,9 +30,11 @@ flowchart LR
 
 - <모듈 목록과 허용하는 의존 방향. 예: ui → application → domain, domain은 아무것도 의존하지 않는다>
 
-## UI 패키지
+## UI
 
-- 경로: <프로젝트별 결정> (DEC-NNNN)
+- 프론트 키트: `harness-psw-front` <태그>, 테마 <이름>, 프레임워크 <이름> (DEC-NNNN)
+- 테마 파일: <예: app/theme.css>
+- 컴포넌트 코드: <예: components/ui/>
 
 ## 배포 단위
 
