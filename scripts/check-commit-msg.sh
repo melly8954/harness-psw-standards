@@ -139,7 +139,7 @@ while IFS=$'\t' read -r st path rest; do
   [[ "$st" == R* || "$st" == C* ]] && path="$rest"
   case "$path" in
     docs/srs/*.md|docs/req/*.md|docs/design/*.md|docs/design/*.html) spec_changed=1 ;;
-    docs/*|records/*|.claude/*|.githooks/*|CLAUDE.md|README.md|.gitignore|.gitattributes|.env.example) ;;
+    docs/*|records/*|.claude/*|.githooks/*|CLAUDE.md|AGENTS.md|README.md|.gitignore|.gitattributes|.env.example) ;;
     *) code_changed=1 ;;
   esac
 

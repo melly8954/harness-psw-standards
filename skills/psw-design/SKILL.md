@@ -55,6 +55,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 ### 2. UI 기초 (전역, 첫 도메인에서 만들고 이후 갱신)
 
 1. 프론트 키트를 고른 태그로 임시 폴더에 가져온다
+   - 권장 태그: `v0.2.0` (shadcn base-nova + Base UI 기준으로 검증된 최신 태그). 더 새 태그가 있으면 키트의 `web/frameworks/next/verify/README.md` "마지막 검증" 표를 확인하고 고른다
    - `git clone --depth 1 --branch <태그> <키트 저장소> <임시 폴더>`
 2. 키트의 `web/frameworks/<프레임워크>/README.md` 절차를 따른다
    - 프레임워크 초기화, UI 라이브러리 초기화, 테마 적용, 컴포넌트 추가
