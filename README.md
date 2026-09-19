@@ -1,4 +1,4 @@
-# agent-harness-standards
+# harness-psw-standards
 
 에이전트가 문서를 정본 삼아 기획 → 설계 → 구현을 진행하도록 돕는 하네스 **harness-psw**의 정본 저장소다.
 

@@ -995,7 +995,7 @@ Closes: OPEN-021
 ### 10.1 저장소 구조
 
 ```text
-agent-harness-standards/
+harness-psw-standards/
   README.md                 저장소 소개, 설치 방법
   harness-psw.md            설계서 (정본)
   install.sh                프로젝트에 스킬·에이전트·스크립트를 복사
