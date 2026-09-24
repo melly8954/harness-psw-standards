@@ -43,7 +43,10 @@ PSW_TEST_GLOBS='tests/* test/* e2e/* __tests__/* */__tests__/* *.test.* *.spec.*
 
 is_test_path() {
   local p="$1" g
-  for g in $PSW_TEST_GLOBS; do
+  local -a globs
+  # 패턴을 파일 이름으로 펼치지 않고 나눈다 (backend/src/test/*가 실제 폴더 목록으로 바뀌면 안 된다)
+  read -r -a globs <<<"$PSW_TEST_GLOBS"
+  for g in "${globs[@]}"; do
     # shellcheck disable=SC2053
     [[ "$p" == $g ]] && return 0
   done
