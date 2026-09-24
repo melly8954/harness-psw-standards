@@ -32,7 +32,7 @@ flowchart LR
 
 ## UI
 
-- 프론트 키트: `harness-psw-front` <태그>, 테마 <이름>, 프레임워크 <이름> (DEC-NNNN)
+- 프론트 키트: `harness-psw-frontend` <태그>, 테마 <이름>, 프레임워크 <이름> (DEC-NNNN)
 - 테마 파일: <예: app/theme.css>
 - 컴포넌트 코드: <예: components/ui/>
 

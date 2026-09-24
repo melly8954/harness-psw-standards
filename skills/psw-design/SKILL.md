@@ -7,7 +7,7 @@ description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한�
 
 `docs/design/`, 프론트 테마·컴포넌트, `docs/conventions.md`를 쓴다.
 
-UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-front`)의 테마와 컴포넌트를 가져와 쓴다.
+UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-frontend`)의 테마와 컴포넌트를 가져와 쓴다.
 
 ## 입력과 출력
 
@@ -15,7 +15,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 |---|---|
 | `approved` REQ (도메인 단위) | `docs/design/` 설계 문서, HTML 목업 |
 | SRS `05-constraints.md` (기술 스택) | 프론트 테마와 컴포넌트 (프론트 키트에서 가져옴) |
-| 프론트 키트 (`harness-psw-front`, 태그) | `docs/design/ui/components.md` |
+| 프론트 키트 (`harness-psw-frontend`, 태그) | `docs/design/ui/components.md` |
 | DEC (설계 결정) | `docs/conventions.md`, `CLAUDE.md` 명령 (구현 준비) |
 
 ## 규칙
@@ -23,7 +23,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 - 전제: SRS 기준선 태그가 있고, 설계할 도메인의 REQ가 `approved`다
 - 템플릿: `references/*.md`
 - 프론트 키트
-  - 저장소: `https://github.com/melly8954/harness-psw-front.git` (비공개). 로컬 사본 `C:\psw\github\harness-psw-front`가 있으면 그 경로를 써도 된다
+  - 저장소: `https://github.com/melly8954/harness-psw-frontend.git` (비공개). 로컬 사본 `C:\psw\github\harness-psw-frontend`가 있으면 그 경로를 써도 된다
   - 목업 템플릿, 컴포넌트 조각, 기본 컴포넌트 목록, 프레임워크별 적용 절차는 키트가 소유한다. 하네스에 복사해 두지 않는다
 - 순서: 아키텍처 → UI 기초 → DB · API · 화면. DB · API · 화면은 맞물려 진행하고 교차 검증으로 맞춘다
 - 문서 축

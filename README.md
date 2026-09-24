@@ -26,7 +26,7 @@ scripts/          검사 스크립트
 
 ## 관련 저장소
 
-- [`harness-psw-front`](https://github.com/melly8954/harness-psw-front) (비공개): 프론트 키트. 테마, 목업 템플릿, 컴포넌트 목록, 프레임워크별 적용 절차. `psw-design`이 태그를 골라 가져온다
+- [`harness-psw-frontend`](https://github.com/melly8954/harness-psw-frontend) (비공개): 프론트 키트. 테마, 목업 템플릿, 컴포넌트 목록, 프레임워크별 적용 절차. `psw-design`이 태그를 골라 가져온다
 
 ## 설치
 
