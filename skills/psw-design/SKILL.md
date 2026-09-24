@@ -1,13 +1,14 @@
 ---
 name: psw-design
-description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한다. 아키텍처·보안 설계, UI 기초(프론트 키트의 테마·컴포넌트 적용, IA), 도메인별 ERD·상태 전이·API·연동·HTML 목업, 구현 착수 전 프로젝트별 결정(도구·경로)을 채운다. REQ가 승인된 도메인의 설계를 시작하거나 설계를 고칠 때 사용한다.
+description: 승인된 harness-psw REQ를 근거로 설계 문서를 작성한다. 아키텍처·보안 설계, UI 기초(프론트 키트의 테마·컴포넌트 적용, IA), 백엔드 기초(백엔드 키트 골격 적용, 문서 조각 반영), 도메인별 ERD·상태 전이·API·연동·HTML 목업, 구현 착수 전 프로젝트별 결정(도구·경로)을 채운다. REQ가 승인된 도메인의 설계를 시작하거나 설계를 고칠 때 사용한다.
 ---
 
 # psw-design
 
-`docs/design/`, 프론트 테마·컴포넌트, `docs/conventions.md`를 쓴다.
+`docs/design/`, 프론트 테마·컴포넌트, 백엔드 골격, `docs/conventions.md`를 쓴다.
 
 UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-frontend`)의 테마와 컴포넌트를 가져와 쓴다.
+백엔드도 골격을 새로 짜지 않는다. 백엔드 키트(`harness-psw-backend`)의 골격을 적용해 시작한다.
 
 ## 입력과 출력
 
@@ -16,6 +17,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 | `approved` REQ (도메인 단위) | `docs/design/` 설계 문서, HTML 목업 |
 | SRS `05-constraints.md` (기술 스택) | 프론트 테마와 컴포넌트 (프론트 키트에서 가져옴) |
 | 프론트 키트 (`harness-psw-frontend`, 태그) | `docs/design/ui/components.md` |
+| 백엔드 키트 (`harness-psw-backend`, 태그) | 백엔드 골격 코드, 문서 조각(ERD 절·API 절 반영, REQ 초안은 기획 루프로) |
 | DEC (설계 결정) | `docs/conventions.md`, `CLAUDE.md` 명령 (구현 준비) |
 
 ## 규칙
@@ -25,7 +27,11 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 - 프론트 키트
   - 저장소: `https://github.com/melly8954/harness-psw-frontend.git` (비공개). 로컬 사본 `C:\psw\github\harness-psw-frontend`가 있으면 그 경로를 써도 된다
   - 목업 템플릿, 컴포넌트 조각, 기본 컴포넌트 목록, 프레임워크별 적용 절차는 키트가 소유한다. 하네스에 복사해 두지 않는다
-- 순서: 아키텍처 → UI 기초 → DB · API · 화면. DB · API · 화면은 맞물려 진행하고 교차 검증으로 맞춘다
+- 백엔드 키트
+  - 저장소: `https://github.com/melly8954/harness-psw-backend.git` (비공개). 로컬 사본 `C:\psw\github\harness-psw-backend`가 있으면 그 경로를 써도 된다
+  - 골격 구조, 라이브러리, 헬퍼, 적용 스크립트와 절차(`<프레임워크>/APPLY.md`)는 키트가 소유한다. 하네스에 복사해 두지 않는다
+  - 키트의 문서 조각 중 REQ 초안은 설계에서 REQ로 만들지 않는다. `psw-change`로 기획 루프를 호출한다
+- 순서: 아키텍처 → UI 기초 · 백엔드 기초 → DB · API · 화면. DB · API · 화면은 맞물려 진행하고 교차 검증으로 맞춘다
 - 문서 축
   - 전역: `architecture.md`, `security.md`, `database/erd.md`, `ui/ia.md`, `ui/ui-rules.md`, `ui/components.md`, `api/_conventions.md`
   - 도메인별: `api/<domain>.md`, `ui/screens/<domain>/`
@@ -51,6 +57,10 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 2. `architecture.md`, `security.md`를 쓴다
 3. 프로젝트별 결정: 프론트 키트의 프레임워크, 태그, 테마를 사용자에게 정하게 하고 DEC로 남긴다
    - 키트에 없는 프레임워크면 멈추고 알린다. 키트에 프레임워크를 먼저 추가한다
+4. 프로젝트별 결정: 백엔드 키트의 프레임워크, 태그, 헬퍼, 패키지 이름, 백엔드 코드 위치를 사용자에게 정하게 하고 DEC로 남긴다 (API 설계 전)
+   - 태그 조회: `git ls-remote --tags --sort=-v:refname <키트 저장소> 'v*'`. 권장은 가장 최근 태그
+   - 헬퍼 목록과 용도는 키트의 `<프레임워크>/helpers/*/HELPER.md`
+   - 키트에 없는 프레임워크면 멈추고 알린다. 키트에 프레임워크를 먼저 추가한다
 
 ### 2. UI 기초 (전역, 첫 도메인에서 만들고 이후 갱신)
 
@@ -73,11 +83,28 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    - 키트의 셸 틀을 `ui/shell.js`로 복사하고, 설정과 메뉴만 고친다. 방법은 키트의 `web/mockup/README.md`
    - 메뉴는 `ia.md` 메뉴 계층을 그대로 옮긴다. 메뉴가 바뀌면 `ia.md`를 먼저 고친다
 
+### 2-B. 백엔드 기초 (전역, 첫 도메인에서 한 번)
+
+1. 백엔드 키트를 고른 태그로 임시 폴더에 가져온다: `git clone --depth 1 --branch <태그> <키트 저장소> <임시 폴더>`
+2. 키트의 `<프레임워크>/APPLY.md` 절차대로 백엔드 코드 위치에 적용한다 (`apply.sh`, 헬퍼·패키지 지정)
+3. 문서 조각을 반영한다 (조각마다 `docs-fragments/<조각>/README.md`)
+   - REQ 초안: `psw-change`로 기획 루프를 호출해 넘긴다. 기획 루프가 SRS 근거를 확인하고 REQ로 만든다
+   - ERD 절: `database/erd.md`에 넣는다. refs는 기획 루프가 만든 REQ ID로 채운다
+   - API 절: `api/<domain>.md`에 넣고 ID를 발급한다 (`next-id.sh API-<도메인>`). refs도 같다
+   - 조각의 역할 이름(예: ADMIN)이 `docs/req/actors.md`와 다르면 문서와 코드를 함께 맞춘다
+   - 다 넣었으면 `docs-fragments/`를 지운다
+4. `architecture.md`를 채운다
+   - 백엔드 절: 키트 태그·헬퍼(DEC), 코드 루트, 공유 파일 경로(DB 마이그레이션 등), 테스트 위치
+   - 모듈 경계 절: 키트가 정한 레이어와 의존 방향. 강제 수단(키트의 레이어 검사 테스트)도 적는다
+5. `docs/conventions.md`에 키트 골격 규칙의 이유와 예외, AC 테스트 작성법을 적는다 (`references/conventions.md`에서 시작, 내용은 키트 `APPLY.md`)
+6. 문서 조각 반영이 끝나면 3단계 도메인 설계와 같은 방식으로 교차 검증·승인을 거친다
+
 ### 3. 도메인 설계
 
 1. `database/erd.md`에 도메인 테이블을 추가한다
 2. 상태가 있는 엔터티는 `state/<entity>.md`를 쓰고, ERD의 상태 컬럼이 이 문서를 참조하게 한다
 3. `api/_conventions.md`(없으면)와 `api/<domain>.md`를 쓴다
+   - `_conventions.md`는 템플릿에서 시작한다. 오류 응답 형식과 기본 에러 코드는 백엔드 키트 골격과 같으므로 바꾸지 않는다. 바꿔야 하면 코드의 에러 코드도 함께 바꾼다
 4. 외부 연동이 있으면 `integration/<system>.md`를 쓰고, 실패 처리를 API 오류나 상태 전이에 반영한다
 5. 화면마다 `ui/screens/<domain>/<screen>.html` 목업을 만든다
    - 만드는 방법은 키트의 `web/mockup/README.md`를 따른다. 키트는 `architecture.md`에 적은 태그로 가져온다
@@ -108,10 +135,12 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 1. 프로젝트별 결정을 사용자와 정하고 각각 DEC로 남긴다
    - 시크릿 저장소 도구 → `architecture.md` 배포 단위
    - lint, 포맷, 커밋 검사, 시크릿 스캔, AC 테스트 도구 → `docs/conventions.md` (`references/conventions.md`에서 시작)
+     - 백엔드 키트의 기본 도구(포맷·lint·AC 테스트·CI)를 그대로 쓰면 키트 태그 DEC가 근거다. 바꾸면 DEC를 따로 남긴다
      - 커밋 검사 도구의 기본안은 하네스 스크립트(`check-commit-msg.sh`)다. 스택과 상관없이 동작한다
-   - 개발 서버, lint, AC 테스트 명령 → `CLAUDE.md` 명령 표
+   - 개발 서버, lint, AC 테스트 명령 → `CLAUDE.md` 명령 표 (백엔드는 키트 `APPLY.md`의 명령 표에서 가져온다)
    - AC 테스트 파일 경로 → `.claude/psw.conf`의 `PSW_TEST_GLOBS` (`templates/psw.conf`에서 시작)
      → 역할별 경로 검사가 이 패턴으로 테스트 파일을 가린다
+     - 백엔드 테스트 위치(`architecture.md` 백엔드 절)를 반드시 넣는다. 기본 패턴은 `src/test/java/` 같은 경로를 잡지 못한다
 2. 커밋 검사 hook과 CI는 `psw-implement` 준비 단계에서 설정한다 (`templates/githooks/`, `templates/github-workflow-psw.yml`)
 3. 다음 단계: `psw-implement`
 

@@ -29,6 +29,7 @@ model: opus
 
 2. `[MUST]` AC는 반드시 테스트를 쓴다. `[SHOULD]` AC는 선택이다
 3. 테스트 이름에 AC ID를 넣는다 (예: `FR-ORD-010 AC-1: 비회원 주문 생성`)
+   - 작성법(기반, 인증된 요청, 데이터 정리)은 `docs/conventions.md` AC 테스트 절을, 위치는 `docs/design/architecture.md` 백엔드 절을 따른다
 4. 내부 함수 단위 테스트는 쓰지 않는다
 5. 테스트가 아직 실패하는지 확인한다 (구현 전이므로)
 6. 커밋: `test: <제목>`, 트레일러 `Refs: <FR-ID>`, `Role: verifier`

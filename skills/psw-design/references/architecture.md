@@ -38,6 +38,13 @@ flowchart LR
 - 셸: <형태, 예: 사이드바형>, 설정 <예: 왼쪽 · 아이콘만 남김 · 벽에 붙음 · 펼침> (DEC-NNNN). 목업 셸 `ui/shell.js`
 - 셸 코드: <예: components/app-sidebar.tsx, app/layout.tsx>
 
+## 백엔드
+
+- 백엔드 키트: `harness-psw-backend` <태그>, 프레임워크 <이름>, 헬퍼 <목록 또는 없음>, 패키지 <이름> (DEC-NNNN)
+- 코드 루트: <예: backend/>
+- 공유 파일: <예: backend/src/main/resources/db/migration/ (DB 마이그레이션)>. 구현자는 고치지 않고 통합 요청으로 보고한다
+- 테스트 위치: <예: backend/src/test/>. `.claude/psw.conf`의 `PSW_TEST_GLOBS`에 넣는다
+
 ## 배포 단위
 
 | 단위 | 대상 | 비고 |

@@ -27,6 +27,7 @@ scripts/          검사 스크립트
 ## 관련 저장소
 
 - [`harness-psw-frontend`](https://github.com/melly8954/harness-psw-frontend) (비공개): 프론트 키트. 테마, 목업 템플릿, 컴포넌트 목록, 프레임워크별 적용 절차. `psw-design`이 태그를 골라 가져온다
+- [`harness-psw-backend`](https://github.com/melly8954/harness-psw-backend) (비공개): 백엔드 키트. Spring Boot 골격, 선택 헬퍼(excel, mail), 문서 조각, 적용 스크립트(`apply.sh`). `psw-design`이 태그와 헬퍼를 골라 적용한다
 
 ## 설치
 
