@@ -35,6 +35,8 @@ flowchart LR
 - 프론트 키트: `harness-psw-frontend` <태그>, 테마 <이름>, 프레임워크 <이름> (DEC-NNNN)
 - 테마 파일: <예: app/theme.css>
 - 컴포넌트 코드: <예: components/ui/>
+- 셸: <형태, 예: 사이드바형>, 설정 <예: 왼쪽 · 아이콘만 남김 · 벽에 붙음 · 펼침> (DEC-NNNN). 목업 셸 `ui/shell.js`
+- 셸 코드: <예: components/app-sidebar.tsx, app/layout.tsx>
 
 ## 배포 단위
 
