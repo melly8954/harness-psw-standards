@@ -33,7 +33,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
   - 엔터티별: `state/<entity>.md` (상태가 3개 이상이거나, 시간·외부 이벤트로 상태가 바뀌는 엔터티)
 - 모든 설계 문서의 frontmatter에 `status`와 `refs`(근거 요구사항 ID)를 적는다
 - 다른 문서가 정본인 값은 옮겨 적지 않고 참조한다
-  - 상태값: `state/<entity>.md` / 테마·컴포넌트: 프론트 코드 (Next: `app/theme.css`, `components/ui/`) / 정책 수치: `_policy.md` / 역할별 권한: `docs/req/actors.md`
+  - 상태값: `state/<entity>.md` / 테마·컴포넌트: 프론트 코드 (경로는 `architecture.md` UI 절) / 정책 수치: `_policy.md` / 역할별 권한: `docs/req/actors.md`
   - 예외: API 문서의 허용 역할은 적는다. 어긋남은 교차 검증으로 잡는다
 - 교차 검증 스크립트가 읽는 형식을 지킨다 (각 템플릿의 주석 참고)
   - `ia.md` 화면 목록 행, 목업 첫 줄 메타 주석, API 제목과 `- refs:` 줄, ERD의 `### <테이블>` 제목, 목업의 `data-component`와 `components.md` 첫 열
@@ -55,11 +55,12 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 ### 2. UI 기초 (전역, 첫 도메인에서 만들고 이후 갱신)
 
 1. 프론트 키트를 고른 태그로 임시 폴더에 가져온다
-   - 권장 태그: `v0.3.0` (shadcn base-nova + Base UI 기준으로 검증된 최신 태그). 더 새 태그가 있으면 키트의 `playground/README.md` "마지막 검증" 표를 확인하고 고른다
-   - 키트의 `playground/`는 키트 관리용이라 프로젝트에 복사하지 않는다
+   - 권장: 가장 최근 태그. 키트는 검증을 마친 커밋에만 태그를 단다
+   - 조회: `git ls-remote --tags --sort=-v:refname <키트 저장소> 'v*'`. 태그마다 바뀐 점은 태그 메시지에 있다
    - `git clone --depth 1 --branch <태그> <키트 저장소> <임시 폴더>`
 2. 키트의 `web/frameworks/<프레임워크>/README.md` 절차를 따른다
    - 프레임워크 초기화, UI 라이브러리 초기화, 테마 적용, 컴포넌트 추가
+   - 절차가 정한 테마 파일과 컴포넌트 코드 경로를 `architecture.md` UI 절에 적는다. 구현자는 이 경로를 공유 파일로 보고 고치지 않는다
    - 키트의 `web/components.md`를 `docs/design/ui/components.md`로 복사하고, 쓰지 않을 컴포넌트는 뺀다
 3. `ui/ui-rules.md`를 쓴다
    - 커스터마이즈는 테마 변수로만 한다. 컴포넌트 코드의 스타일을 직접 바꾸지 않는다
@@ -73,11 +74,12 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 3. `api/_conventions.md`(없으면)와 `api/<domain>.md`를 쓴다
 4. 외부 연동이 있으면 `integration/<system>.md`를 쓰고, 실패 처리를 API 오류나 상태 전이에 반영한다
 5. 화면마다 `ui/screens/<domain>/<screen>.html` 목업을 만든다
-   - 키트의 `web/mockup/screen.html`에서 시작하고, `{{THEME_CSS_PATH}}`를 프로젝트 테마 파일의 상대 경로로 바꾼다
-   - 컴포넌트는 키트의 `web/mockup/snippets.md` 조각을 그대로 쓰고, `data-component`를 단다
+   - 만드는 방법은 키트의 `web/mockup/README.md`를 따른다. 키트는 `architecture.md`에 적은 태그로 가져온다
+   - 첫 줄은 메타 주석이다. `crosscheck.sh`가 읽는 형식이라 바꾸지 않는다
+     `<!-- psw id: SCR-ORD-001 | refs: FR-ORD-001 | api: API-ORD-001, API-ORD-003 | status: draft -->`
+   - 컴포넌트는 키트 조각을 그대로 쓰고, 컴포넌트를 쓴 요소에 `data-component`를 단다
    - 기본, 빈 상태, 로딩, 오류 네 가지 상태를 채운다
    - `components.md`에 있는 컴포넌트만 쓴다. 새 컴포넌트가 필요하면 `components.md`에 먼저 추가하고 프로젝트에 컴포넌트를 추가한다
-   - 목업은 인터넷 연결이 있어야 제대로 보인다 (Tailwind를 CDN에서 불러온다)
 
 ### 4. 교차 검증
 
@@ -88,7 +90,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 1. `.claude/scripts/psw/loop-status.sh docs/design`으로 종료 조건을 확인한다
 2. 사용자에게 도메인 설계 승인을 요청한다
    - 요약: 화면 수, API 수, 추가·변경한 테이블, 상태 전이 문서, 남은 OPEN, 교차 검증 결과
-   - 목업은 파일 경로를 알려 사용자가 브라우저로 열어보게 한다
+   - 목업은 파일 경로를 알려 사용자가 브라우저로 열어보게 한다. 여는 데 필요한 조건(인터넷 연결 등)은 키트 `web/mockup/README.md`를 보고 함께 알린다
 3. 승인은 사용자가 입력창에서 직접 실행한다: `! bash .claude/scripts/psw/approve.sh <설계 문서·목업 경로>`
    - 에이전트의 승인 시도는 hook이 막는다
 4. 승인 시점의 모양을 남겨야 하면 목업 스크린샷을 `records/`에 저장한다
