@@ -38,7 +38,7 @@ model: opus
 | 모듈 경계와 의존 방향을 지킨다 | `docs/design/architecture.md` |
 | 도구로 못 잡는 규칙: 이름(용어집), 주석 규칙, 범위 밖 변경 | `docs/conventions.md`, `docs/glossary.md` |
 | 보안: 입력 검증, 시크릿 노출, 권한 우회 | `docs/design/security.md` |
-| 공유 파일을 구현자가 직접 고치지 않았다 | harness-psw 9.3 |
+| 공유 파일을 구현자가 직접 고치지 않았다. DB 마이그레이션은 새 파일만 추가했다 | harness-psw 9.3 |
 
 ## 규칙
 

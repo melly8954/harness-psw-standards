@@ -42,8 +42,9 @@ flowchart LR
 
 - 백엔드 키트: `harness-psw-backend` <태그>, 프레임워크 <이름>, 헬퍼 <목록 또는 없음>, 패키지 <이름> (DEC-NNNN)
 - 코드 루트: <예: backend/>
-- 공유 파일: <예: backend/src/main/resources/db/migration/ (DB 마이그레이션)>. 구현자는 고치지 않고 통합 요청으로 보고한다
+- DB 마이그레이션: <예: backend/src/main/resources/db/migration/>. 구현자는 새 파일만 추가하고 이미 있는 파일은 고치지 않는다
 - 테스트 위치: <예: backend/src/test/>. `.claude/psw.conf`의 `PSW_TEST_GLOBS`에 넣는다
+- 골격 테스트 조정: <예: 로그인 FR에서 테스트용 인증 주체 조회를 지우고 실제 계정으로 바꾼다 (키트 APPLY.md "사용자 도메인에서 할 일")>
 
 ## 배포 단위
 
