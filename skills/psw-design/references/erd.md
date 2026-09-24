@@ -25,7 +25,7 @@ erDiagram
 ### <orders>
 
 - 설명: <한 줄>
-- 삭제 정책: soft / hard
+- 삭제 정책: soft / hard (<hard면 이유>)  <!-- soft가 기본이다 (harness-psw 4.7) -->
 - refs: <FR-ORD-001>
 
 | 컬럼 | 타입 | null | 기본값 | 설명 |
