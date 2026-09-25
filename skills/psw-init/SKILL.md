@@ -1,6 +1,6 @@
 ---
 name: psw-init
-description: harness-psw 프로젝트 골격(CLAUDE.md, docs/, records/, glossary.md, .env.example, .gitignore, .gitattributes)과 승인 보호 hook을 만든다. 새 프로젝트에 harness-psw를 처음 적용할 때 사용한다.
+description: harness-psw 프로젝트 골격(CLAUDE.md, docs/, open-question.md, glossary.md, .env.example, .gitignore, .gitattributes)과 승인 보호 hook을 만든다. 새 프로젝트에 harness-psw를 처음 적용할 때 사용한다.
 ---
 
 # psw-init
@@ -18,7 +18,7 @@ description: harness-psw 프로젝트 골격(CLAUDE.md, docs/, records/, glossar
 
 - git 저장소가 아니면 사용자에게 `git init` 여부를 묻는다
 - 아래 경로 중 이미 있는 것을 확인한다
-  - `CLAUDE.md`, `docs/`, `records/`, `.env.example`, `.gitignore`, `.gitattributes`, `.claude/settings.json`
+  - `CLAUDE.md`, `docs/`, `.env.example`, `.gitignore`, `.gitattributes`, `.claude/settings.json`
 - MUST: 이미 있는 파일은 덮어쓰지 않는다. 목록을 보고하고 진행 여부를 묻는다
   - 예외: `.gitignore`, `.gitattributes`는 블록만 추가하고, `.claude/settings.json`은 hook 항목만 추가한다
 
@@ -26,26 +26,18 @@ description: harness-psw 프로젝트 골격(CLAUDE.md, docs/, records/, glossar
 
 - 프로젝트명
 - 한 줄 요약
-  - 아직 정하지 못했으면 `(인터뷰 후 작성)`으로 두고, `psw-srs`가 SRS 개요를 쓴 뒤 갱신한다
+  - 아직 정하지 못했으면 `(인터뷰 후 작성)`으로 두고, `psw-interview`가 `docs/req/README.md` 개요를 쓴 뒤 갱신한다
 
 ### 3. 디렉터리 생성
 
 아래 디렉터리를 만들고, 빈 디렉터리에는 `.gitkeep`을 둔다.
 
 ```text
-docs/srs/
 docs/req/
 docs/design/
-docs/ops/
-records/decisions/
-records/changes/
-records/open/
-records/interviews/
-records/references/
-records/verifications/
 ```
 
-- `docs/design/` 아래 하위 폴더는 `psw-design`이 필요할 때 만든다
+- `docs/req/`, `docs/design/` 아래 하위 폴더와 파일은 `psw-interview`, `psw-req`, `psw-design`이 필요할 때 만든다
 
 ### 4. 템플릿 복사
 
@@ -53,6 +45,7 @@ records/verifications/
 |---|---|---|
 | `templates/CLAUDE.md.tmpl` | `CLAUDE.md` | `{{PROJECT_NAME}}`, `{{SUMMARY}}`를 2단계 답으로 바꾼다 |
 | `templates/glossary.md` | `docs/glossary.md` | 그대로 복사 |
+| `templates/open-question.md` | `docs/open-question.md` | 그대로 복사 |
 | `templates/env.example` | `.env.example` | 그대로 복사 |
 
 ### 5. `.gitignore`, `.gitattributes`
@@ -86,5 +79,5 @@ records/verifications/
 
 - 커밋 검사 hook·CI 설정
   → 커밋 검사 도구가 프로젝트별 결정 항목(harness-psw 1.5)이므로 구현 착수 전에 설정한다 (`psw-implement`)
-- SRS, REQ, 설계 문서 작성
+- REQ, 설계 문서 작성
 - 기존 파일 덮어쓰기

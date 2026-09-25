@@ -1,11 +1,10 @@
 ---
 id: FR-XXX-NNN
 status: draft
-source: docs/srs/04-requirements/<domain>.md
 refs: []
 ---
 
-# FR-XXX-NNN <SRS의 한 줄 요구와 같은 제목>
+# FR-XXX-NNN <도메인 README 기능 목록의 한 줄 요구와 같은 제목>
 
 <!-- refs: 이 기능에만 적용되는 NFR·SEC·INT·DAT ID. 전체 적용 항목은 적지 않는다 -->
 

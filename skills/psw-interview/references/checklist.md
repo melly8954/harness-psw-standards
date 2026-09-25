@@ -3,9 +3,10 @@
 - 형식: `- [필수|선택] <ID> <질문>`. `checklist-coverage.sh`가 이 형식을 읽는다
 - `[필수]`는 모든 프로젝트에서 묻고, `[선택]`은 프로젝트 성격에 따라 묻는다
 - ID는 소문자로 쓴다 (harness-psw 3.1)
-- 운영(배포, 모니터링)은 자리만 확보하므로 묻지 않는다
+- 운영(배포, 모니터링)은 범위 밖이므로 묻지 않는다
+- 절 제목의 → 뒤는 답을 적을 위치다. 경로는 `docs/req/` 기준이다
 
-## 방향성 → SRS `01-overview`, `02-scope`
+## 방향성 → `README.md` 개요·범위
 
 - [필수] ck-dir-1 어떤 문제를 해결하나, 누구를 위한 것인가
 - [필수] ck-dir-2 성공 기준은 무엇인가 (측정 가능한 수치로)
@@ -14,14 +15,14 @@
 - [선택] ck-dir-5 레퍼런스와 다르게 가져갈 점
 - [선택] ck-dir-6 주요 일정 (출시일, 중간 점검)
 
-## 행위자·권한 → SRS `03-actors`, `req/actors.md`
+## 행위자·권한 → `actors.md` 역할 목록 (권한 매트릭스는 `psw-req`)
 
 - [필수] ck-act-1 사용자 역할 목록 (비회원, 회원, 관리자 등)
 - [필수] ck-act-2 역할별로 할 수 있는 것 / 없는 것
 - [필수] ck-act-3 로그인 없이 쓸 수 있는 기능
 - [선택] ck-act-4 관리자 등급 구분, 권한 위임
 
-## 기능 → SRS `04-requirements/<domain>.md`
+## 기능 → `README.md` 코드표, `functional/<domain>/README.md` 기능 목록, FR 파일 흐름
 
 - [필수] ck-fun-1 도메인 목록 (회원, 주문, 결제 등)
 - [필수] ck-fun-2 도메인별 핵심 행위
@@ -30,7 +31,7 @@
 - [선택] ck-fun-5 검색, 필터, 정렬
 - [선택] ck-fun-6 파일 업로드, 다운로드
 
-## 비기능 → SRS `04-requirements/non-functional.md`
+## 비기능 → `non-functional/`
 
 - [필수] ck-nfr-1 예상 사용자 수, 동시 접속자 수
 - [필수] ck-nfr-2 지원 환경 (브라우저, 모바일, 앱)
@@ -38,7 +39,7 @@
 - [선택] ck-nfr-4 가용성 목표, 점검 시간 허용 여부
 - [선택] ck-nfr-5 접근성, 다국어, 시간대
 
-## 보안 → SRS `04-requirements/security.md`
+## 보안 → `security/`
 
 - [필수] ck-sec-1 인증 방식 (이메일, 소셜, SSO, 2단계 인증)
 - [필수] ck-sec-2 수집하는 개인정보 항목
@@ -47,20 +48,20 @@
 - [선택] ck-sec-5 감사 로그 대상 (누가 언제 무엇을)
 - [선택] ck-sec-6 비밀번호 정책
 
-## 연동 → SRS `04-requirements/integration.md`
+## 연동 → `integration/`
 
 - [필수] ck-int-1 외부 시스템 목록 (결제, 본인인증, 지도, 메일, SMS 등)
 - [선택] ck-int-2 시스템별 실패 시 처리
 - [선택] ck-int-3 계약과 API 키 준비 상태, 테스트 환경 유무
 
-## 데이터 → SRS `04-requirements/data.md`
+## 데이터 → `data/`
 
 - [필수] ck-dat-1 기존 데이터 이관 여부
 - [선택] ck-dat-2 보존 기간, 탈퇴 시 삭제 범위
 - [선택] ck-dat-3 백업 주기, 복구 목표 시간
 - [선택] ck-dat-4 통계·리포트 필요 여부
 
-## 제약 → SRS `05-constraints`
+## 제약 → `README.md` 제약 절
 
 - [필수] ck-con-1 기술 스택 (UI 기초를 만들려면 먼저 정해져야 한다)
 - [필수] ck-con-2 호스팅·인프라

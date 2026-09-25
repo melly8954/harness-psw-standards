@@ -1,6 +1,6 @@
 # harness-psw-standards
 
-에이전트가 문서를 정본 삼아 기획 → 설계 → 구현을 진행하도록 돕는 하네스 **harness-psw**의 정본 저장소다.
+에이전트가 요구사항과 규칙 문서를 기준 삼아 기획 → 설계 → 구현을 진행하도록 돕는 하네스 **harness-psw**의 정본 저장소다.
 
 ## 정본 관계
 
@@ -27,7 +27,7 @@ scripts/          검사 스크립트
 ## 관련 저장소
 
 - [`harness-psw-frontend`](https://github.com/melly8954/harness-psw-frontend) (비공개): 프론트 키트. 테마, 목업 템플릿, 컴포넌트 목록, 프레임워크별 적용 절차. `psw-design`이 태그를 골라 가져온다
-- [`harness-psw-backend`](https://github.com/melly8954/harness-psw-backend) (비공개): 백엔드 키트. Spring Boot 골격, 선택 헬퍼(excel, mail), 문서 조각, 적용 스크립트(`apply.sh`). `psw-design`이 태그와 헬퍼를 골라 적용한다
+- [`harness-psw-backend`](https://github.com/melly8954/harness-psw-backend) (비공개): 백엔드 키트. Spring Boot 골격, 선택 헬퍼(excel, mail), 문서 조각(REQ 초안), 적용 스크립트(`apply.sh`). `psw-design`이 태그와 헬퍼를 골라 적용한다
 
 ## 설치
 
@@ -38,7 +38,7 @@ bash install.sh <프로젝트 경로>
 ```
 
 - `.claude/skills/psw-*/`, `.claude/agents/`, `.claude/scripts/psw/`에 복사한다
-- 다시 실행하면 하네스가 소유한 파일만 교체한다
+- 다시 실행하면 하네스가 소유한 파일만 교체한다. 하네스에서 없어진 `psw-*` 스킬은 지운다
 - 설치 후 프로젝트에서 `psw-init` 스킬로 골격을 만든다
 
 ## 구축 현황
@@ -46,9 +46,9 @@ bash install.sh <프로젝트 경로>
 | 구성 | 상태 |
 |---|---|
 | 설계서 | 완료 |
-| 스킬 8종 (`psw-init`, `psw-interview`, `psw-srs`, `psw-req`, `psw-design`, `psw-crosscheck`, `psw-implement`, `psw-change`) | 완료 |
+| 스킬 7종 (`psw-init`, `psw-interview`, `psw-req`, `psw-design`, `psw-crosscheck`, `psw-implement`, `psw-change`) | 완료 |
 | 에이전트 3종 (`implementer`, `reviewer`, `verifier`) | 완료 |
-| 검사 스크립트 12종 | 완료 |
+| 검사 스크립트 11종 | 완료 |
 | 실제 프로젝트 적용 검증 | 예정 (설계서 10.4) |
 
 ## 승인
