@@ -5,7 +5,7 @@
 #   Claude Code PreToolUse hook 입력(JSON)을 stdin으로 받는다.
 #   하위 에이전트 안이면 agent_type을 역할로 쓴다. 막으면 exit 2.
 # 검사 모드: guard-paths.sh check <역할> <경로...>
-#   커밋 검사(check-role-paths.sh)에서 쓴다. 막으면 exit 1.
+#   규칙을 손으로 확인할 때 쓴다. 막으면 exit 1.
 #
 # 역할
 #   implementer  테스트 파일, docs/, .claude/, CLAUDE.md 편집 금지
@@ -25,7 +25,7 @@ normalize_root() {
 
 root="$(normalize_root "${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}")"
 
-# 파일이 속한 git 작업 폴더를 루트로 쓴다 (FR별 worktree 안의 파일도 올바른 상대 경로가 된다)
+# 파일이 속한 git 작업 폴더를 루트로 쓴다 (worktree를 쓰더라도 올바른 상대 경로가 된다)
 root_of() {
   local d="${1//\\//}"
   d="${d%/*}"

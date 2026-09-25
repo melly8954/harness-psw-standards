@@ -1,4 +1,4 @@
-# harness-psw PR 검사 (5.4, 9.4)
+# harness-psw PR 검사 (5.4)
 # GitHub를 쓰는 프로젝트에서 .github/workflows/psw.yml로 복사한다.
 name: harness-psw
 
@@ -21,6 +21,3 @@ jobs:
             bash .claude/scripts/psw/check-commit-msg.sh --commit "$c" || fail=1
           done
           exit $fail
-
-      - name: 역할별 경로
-        run: bash .claude/scripts/psw/check-role-paths.sh "origin/${{ github.base_ref }}..HEAD"

@@ -13,10 +13,9 @@ echo "# 추적 매트릭스"
 echo
 echo "- 생성: $(date '+%Y-%m-%d %H:%M'), 커밋 $(git rev-parse --short HEAD 2>/dev/null || echo 없음)"
 echo "- 테스트: 코드에서 'FR-xxx-NNN AC-n'을 참조하는 AC 수 / 전체 AC 수"
-echo "- 병합: 커밋 본문에 AC 결과를 남긴 병합 커밋 수 (harness-psw 5.2)"
 echo
-echo "| FR | 제목 | 상태 | 우선순위 | 설계 참조 | AC (MUST) | 테스트 | 병합 | 커밋 |"
-echo "|---|---|---|---|---|---|---|---|---|"
+echo "| FR | 제목 | 상태 | 우선순위 | 설계 참조 | AC (MUST) | 테스트 | 커밋 |"
+echo "|---|---|---|---|---|---|---|---|"
 
 # FR 파일을 "ID 파일" 줄로 만들어 ID 순으로 정렬한다
 fr_list() {
@@ -35,7 +34,6 @@ while read -r id f; do
   ac_total="$(grep -cE '^- AC-[0-9]+' "$f")"
   ac_must="$(grep -cE '^- AC-[0-9]+ \[MUST\]' "$f")"
   tested="$(git grep --untracked -h -oE "${id} AC-[0-9]+" -- . ':!docs' ':!.claude' 2>/dev/null | sort -u | wc -l | tr -d ' ')"
-  merged="$(git log --all --merges --format=%H --grep="${id} AC-" 2>/dev/null | wc -l | tr -d ' ')"
   commits="$(git log --all --format=%H --grep="$id" 2>/dev/null | wc -l | tr -d ' ')"
-  echo "| ${id} | ${title} | ${st} | ${prio:--} | ${design} | ${ac_total} (${ac_must}) | ${tested}/${ac_total} | ${merged} | ${commits} |"
+  echo "| ${id} | ${title} | ${st} | ${prio:--} | ${design} | ${ac_total} (${ac_must}) | ${tested}/${ac_total} | ${commits} |"
 done < <(fr_list)

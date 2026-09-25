@@ -70,7 +70,7 @@ while IFS= read -r t; do
   [[ -z "$t" ]] && continue
   key="${t%%:*}"
   case "$key" in
-    Refs|Closes|Role|Co-Authored-By|Signed-off-by) ;;
+    Refs|Closes|Co-Authored-By|Signed-off-by) ;;
     *) warn "알 수 없는 트레일러: $key" ;;
   esac
 done <<<"$trailers"
@@ -102,11 +102,6 @@ while IFS= read -r v; do
   [[ "$v" =~ ^OPEN-[0-9]{3,}$ ]] || { err "Closes 형식이 아니다: $v"; continue; }
   exists_in "## $v" docs/open-question.md || err "Closes의 $v 항목이 docs/open-question.md에 없다"
 done < <(trailer_values Closes)
-
-while IFS= read -r v; do
-  [[ -z "$v" ]] && continue
-  [[ "$v" =~ ^(implementer|verifier)$ ]] || err "Role은 implementer 또는 verifier다: $v"
-done < <(trailer_values Role)
 
 # ---------- 필수 트레일러 ----------
 code_changed=0

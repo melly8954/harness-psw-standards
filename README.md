@@ -48,7 +48,7 @@ bash install.sh <프로젝트 경로>
 | 설계서 | 완료 |
 | 스킬 7종 (`psw-init`, `psw-interview`, `psw-req`, `psw-design`, `psw-crosscheck`, `psw-implement`, `psw-change`) | 완료 |
 | 에이전트 3종 (`implementer`, `reviewer`, `verifier`) | 완료 |
-| 검사 스크립트 11종 | 완료 |
+| 검사 스크립트 10종 | 완료 |
 | 실제 프로젝트 적용 검증 | 예정 (설계서 10.4) |
 
 ## 승인
