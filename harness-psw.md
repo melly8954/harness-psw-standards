@@ -235,7 +235,7 @@ REQ ← 설계(화면, 아키텍처·보안) ← 테스트·커밋
     req/                    요구사항 (3절)
       README.md             개요·범위·제약, 도메인·영역 코드, 전체 적용 목록
       actors.md             역할 목록과 권한 매트릭스
-      functional/<domain>/  README.md(기능 목록), _policy.md, <feature>.md
+      functional/<domain>/  README.md(기능 목록), _policy.md, <NNN>-<feature>.md
       non-functional/
       security/
       integration/
@@ -319,7 +319,7 @@ REQ ← 설계(화면, 아키텍처·보안) ← 테스트·커밋
 | `req/README.md` | 개요(배경, 대상 사용자, 성공 기준, 레퍼런스), 범위 안·밖, 첫 출시(MVP), 해당 없음, 제약사항(`CON-`), 도메인·영역 코드, 전체 적용 요구사항 목록 |
 | `req/actors.md` | 역할 목록, 역할별 권한 매트릭스 |
 | `req/functional/<domain>/README.md` | 그 도메인의 기능 목록: ID, 한 줄 요구, 우선순위, 파일 |
-| `req/functional/<domain>/<feature>.md` | 기능 하나의 상세: 흐름, 예외, 수용 기준 |
+| `req/functional/<domain>/<NNN>-<feature>.md` | 기능 하나의 상세: 흐름, 예외, 수용 기준 |
 | `req/functional/<domain>/_policy.md` | 도메인 공유 규칙·수치, 상태 전이 |
 | 영역 파일 (`non-functional/` 등) | 비기능·보안·연동·데이터 항목과 기준 |
 
@@ -343,7 +343,7 @@ REQ ← 설계(화면, 아키텍처·보안) ← 테스트·커밋
 req/
   README.md                          개요·범위·제약, 코드표, 전체 적용 목록
   actors.md
-  functional/<domain>/               README.md, _policy.md, <feature>.md
+  functional/<domain>/               README.md, _policy.md, <NNN>-<feature>.md
   non-functional/
   security/
   integration/
@@ -352,6 +352,10 @@ req/
 
 - 기능 요구사항 1개당 md 1개를 산출한다
   → 기능 요구사항이 130개면 기능 REQ 파일도 130개다
+- FR 파일 이름은 `<ID 번호>-<행위>.md`로 짓는다 (예: `FR-AUTH-001` → `001-login-email.md`)
+  - 번호는 FR ID의 세 자리 번호와 같다. 행위는 영어 kebab-case다
+  → 파일 목록이 기능 목록과 같은 순서로 정렬되고, 파일 이름만 보고 ID를 알 수 있다
+  - 번호가 ID에서 나오므로 파일 이름의 번호를 따로 매기지 않는다. 지운 FR의 번호는 비워 둔다 (1.2)
 - 역할 목록과 권한 매트릭스는 `req/actors.md`가 소유한다
   - FR 파일의 행위자는 주 흐름을 수행하는 주체만 적는다. 누가 허용되는지는 `actors.md`에만 적는다
   - `actors.md` 형식: 행은 FR(도메인별 절), 열은 역할. 값은 `○`(허용), `-`(불가), `△`(조건부, 조건은 표 아래에 적음)
@@ -419,10 +423,10 @@ req/
 req/functional/auth/
   README.md       기능 목록 (ID, 한 줄 요구, 우선순위, 파일)
   _policy.md      세션 만료, 자동 로그인 기간, 동시 로그인 수 (수치의 유일한 정의처)
-  login-email.md
-  login-social.md
-  logout.md
-  auto-login.md
+  001-login-email.md
+  002-login-social.md
+  003-logout.md
+  004-auto-login.md
 ```
 
 ### 3.5 REQ 템플릿과 수용 기준

@@ -23,7 +23,7 @@ description: harness-psw 요구사항(REQ)의 상세를 채운다. 인터뷰가 
   → 범위는 인터뷰에서 사용자가 정한다
 - 상세를 모르면 추측하지 않는다. 사용자에게 묻거나 `[OPEN-NNN]` 자리표시를 둔다 (`psw-change` 절차 A)
 - 파일 구성
-  - 기능 목록의 한 줄 = FR 파일 1개. 파일 이름은 행위를 나타내는 영어 kebab-case (예: `guest-checkout.md`)
+  - 기능 목록의 한 줄 = FR 파일 1개. 파일 이름은 `<ID 번호>-<행위>.md`다. 번호는 FR ID의 세 자리 번호, 행위는 영어 kebab-case (예: `FR-ORD-010` → `010-guest-checkout.md`)
   - FR 파일 제목은 기능 목록의 한 줄 요구와 같게 쓴다
   - 우선순위는 FR 파일에 적지 않는다 (도메인 `README.md`가 소유)
   - 둘 이상의 기능이 같이 쓰는 규칙·수치는 `_policy.md`에만 적고, FR은 항목 이름으로 참조한다

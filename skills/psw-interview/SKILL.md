@@ -14,7 +14,7 @@ description: harness-psw 기획 인터뷰를 진행한다. 프로젝트 주제�
 | 프로젝트 주제 (사용자) | `docs/req/README.md` (개요, 범위, 제약, 코드표, 해당 없음) |
 | 기존 REQ, `docs/open-question.md` (다시 묻는 경우) | `docs/req/actors.md` (역할 목록) |
 | | `docs/req/functional/<domain>/README.md` (기능 목록) |
-| | `docs/req/functional/<domain>/<feature>.md` (흐름 초안) |
+| | `docs/req/functional/<domain>/<NNN>-<feature>.md` (흐름 초안) |
 | | 영역 파일 (`non-functional/` 등, 항목 초안) |
 | | 미결 (`psw-change` 절차 A) |
 
@@ -62,7 +62,7 @@ description: harness-psw 기획 인터뷰를 진행한다. 프로젝트 주제�
 1. 체크리스트 순서대로 묻는다: 방향성 → 행위자 → 기능 → 비기능·보안·연동·데이터 → 제약
    → 기능이 나와야 비기능의 적용 범위가 정해진다
 2. 기능(ck-fun-2, ck-fun-3)은 도메인마다 반복해서 묻는다
-   - 핵심 행위마다 기능 목록에 한 줄(ID, 한 줄 요구, 우선순위)을 넣고 FR 파일을 만든다
+   - 핵심 행위마다 기능 목록에 한 줄(ID, 한 줄 요구, 우선순위)을 넣고 FR 파일을 만든다. 파일 이름은 `<ID 번호>-<행위>.md` (예: `001-login-email.md`)
    - FR 파일에는 행위자, 주 흐름, 예외 흐름까지만 적는다
 3. 묶음마다 답을 해당 파일에 바로 적는다
 
