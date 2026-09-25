@@ -18,10 +18,10 @@ while IFS= read -r f; do
   (( est <= limit )) && continue
   over=$((over + 1))
   case "$f" in
-    docs/design/database/erd.md|docs/design/architecture.md) note="응집 우선. 넘으면 도메인 단위 분할 검토" ;;
+    docs/design/architecture.md|docs/design/conventions.md) note="응집 우선. 넘으면 영역 단위 분할 검토" ;;
     *) note="분리 검토" ;;
   esac
   printf '%6d  %s  (%s)\n' "$est" "$f" "$note"
-done < <(find docs records -type f -name '*.md' 2>/dev/null | sort)
+done < <(find docs -type f -name '*.md' 2>/dev/null | sort)
 
 echo "기준 ${limit} 토큰 초과: ${over}개 (HTML 목업, 자동 생성 파일은 제외)"

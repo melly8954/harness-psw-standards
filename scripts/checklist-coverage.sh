@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # 인터뷰 체크리스트의 [필수] 항목이 처리됐는지 확인한다 (harness-psw 3.1, 10.5).
-# 처리로 인정하는 것
-#   - 인터뷰 기록의 "체크리스트:" 줄에 ID가 있음 (답을 받음)
-#   - OPEN 파일에 ID가 있음 (미결로 등록됨)
-#   - docs/srs/02-scope.md 해당 없음 표의 행에 ID가 있음
+# 처리로 인정하는 것 (모두 체크리스트 ID로 찾는다)
+#   - docs/req/ 안에 ID가 있음: 답을 반영한 자리의 주석(<!-- ck-dir-1 -->)이나 "해당 없음" 표의 행
+#   - docs/open-question.md 항목에 ID가 있음 (미결로 등록됨)
 # 모두 처리됐으면 0, 아니면 1로 끝난다.
 # 사용법: checklist-coverage.sh [체크리스트 경로]
 set -euo pipefail
@@ -15,19 +14,14 @@ checklist="${1:-.claude/skills/psw-interview/references/checklist.md}"
 [[ -f "$checklist" ]] || { echo "체크리스트가 없습니다: $checklist" >&2; exit 1; }
 
 required="$(grep -oE '^- \[필수\] ck-[a-z]+-[0-9]+' "$checklist" | awk '{print $3}')"
-
-answered="$(grep -rhE '^[[:space:]]*- 체크리스트:' records/interviews 2>/dev/null | grep -oE 'ck-[a-z]+-[0-9]+' || true)"
-opened="$(grep -rhoE 'ck-[a-z]+-[0-9]+' records/open 2>/dev/null || true)"
-not_applicable="$(sed -n '/^## 해당 없음/,/^## /p' docs/srs/02-scope.md 2>/dev/null | grep -E '^\|' | grep -oE 'ck-[a-z]+-[0-9]+' || true)"
+handled="$(grep -rhoE 'ck-[a-z]+-[0-9]+' docs/req docs/open-question.md 2>/dev/null | sort -u || true)"
 
 missing=()
 total=0
 while IFS= read -r id; do
   [[ -z "$id" ]] && continue
   total=$((total + 1))
-  if grep -qxF "$id" <<<"$answered" || grep -qxF "$id" <<<"$opened" || grep -qxF "$id" <<<"$not_applicable"; then
-    continue
-  fi
+  grep -qxF "$id" <<<"$handled" && continue
   missing+=("$id")
 done <<<"$required"
 

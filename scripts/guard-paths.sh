@@ -8,8 +8,8 @@
 #   커밋 검사(check-role-paths.sh)에서 쓴다. 막으면 exit 1.
 #
 # 역할
-#   implementer  테스트 파일, docs/, records/, .claude/, CLAUDE.md 편집 금지
-#   verifier     테스트 파일과 records/verifications/만 편집 가능
+#   implementer  테스트 파일, docs/, .claude/, CLAUDE.md 편집 금지
+#   verifier     테스트 파일만 편집 가능
 #   reviewer     편집 금지
 #   그 외        역할 제한 없음
 # 모든 역할(메인 세션 포함)
@@ -60,15 +60,12 @@ deny_reason() {
     implementer)
       if is_test_path "$p"; then echo "구현자는 테스트 파일을 고치지 않는다 ($p)"; return 1; fi
       case "$p" in
-        docs/*|records/*|.claude/*|CLAUDE.md) echo "구현자는 문서·기록·설정을 고치지 않는다 ($p)"; return 1 ;;
+        docs/*|.claude/*|CLAUDE.md) echo "구현자는 문서·설정을 고치지 않는다 ($p)"; return 1 ;;
       esac
       ;;
     verifier)
       if is_test_path "$p"; then return 0; fi
-      case "$p" in
-        records/verifications/*) return 0 ;;
-      esac
-      echo "검증자는 테스트 파일과 records/verifications/만 고친다 ($p)"; return 1
+      echo "검증자는 테스트 파일만 고친다 ($p)"; return 1
       ;;
     reviewer)
       echo "검토자는 파일을 고치지 않는다 ($p)"; return 1

@@ -32,6 +32,16 @@ for skill in "$HARNESS_DIR"/skills/psw-*/; do
   echo "스킬: $name"
 done
 
+# 하네스에서 없어진 psw-* 스킬은 지운다.
+for installed in "$CLAUDE_DIR"/skills/psw-*/; do
+  [[ -d "$installed" ]] || continue
+  name="$(basename "$installed")"
+  if [[ ! -d "$HARNESS_DIR/skills/$name" ]]; then
+    rm -rf "${CLAUDE_DIR:?}/skills/$name"
+    echo "스킬 삭제: $name (하네스에서 없어짐)"
+  fi
+done
+
 for agent in "$HARNESS_DIR"/agents/*.md; do
   [[ -f "$agent" ]] || continue
   cp "$agent" "$CLAUDE_DIR/agents/"

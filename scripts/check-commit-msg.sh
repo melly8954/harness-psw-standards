@@ -70,12 +70,12 @@ while IFS= read -r t; do
   [[ -z "$t" ]] && continue
   key="${t%%:*}"
   case "$key" in
-    Refs|Decision|CR|Closes|Role|Co-Authored-By|Signed-off-by) ;;
+    Refs|Closes|Role|Co-Authored-By|Signed-off-by) ;;
     *) warn "알 수 없는 트레일러: $key" ;;
   esac
 done <<<"$trailers"
 
-# ID 존재 검사: 새 상태나 이전 상태에 있으면 인정한다 (수락된 CR, 해결된 OPEN은 이 커밋에서 지워진다)
+# ID 존재 검사: 새 상태나 이전 상태에 있으면 인정한다 (해결된 OPEN은 이 커밋에서 지워진다)
 exists_in() { # exists_in <문자열> <경로...>
   local needle="$1"; shift
   if [[ -n "$new_ref" ]]; then
@@ -86,16 +86,6 @@ exists_in() { # exists_in <문자열> <경로...>
   [[ -n "$base" ]] && git grep -q -F -e "$needle" "$base" -- "$@" 2>/dev/null && return 0
   return 1
 }
-file_exists_in() { # file_exists_in <경로>
-  if [[ -n "$new_ref" ]]; then
-    git cat-file -e "$new_ref:$1" 2>/dev/null && return 0
-  else
-    git cat-file -e ":$1" 2>/dev/null && return 0
-  fi
-  [[ -n "$base" ]] && git cat-file -e "$base:$1" 2>/dev/null && return 0
-  return 1
-}
-
 while IFS= read -r v; do
   [[ -z "$v" ]] && continue
   if [[ "$v" =~ ^((FR|NFR|SEC|INT|DAT)-[A-Z0-9]+-[0-9]+|CON-[0-9]+)$ ]]; then
@@ -109,20 +99,8 @@ done < <(trailer_values Refs)
 
 while IFS= read -r v; do
   [[ -z "$v" ]] && continue
-  [[ "$v" =~ ^DEC-[0-9]{4}$ ]] || { err "Decision 형식이 아니다: $v"; continue; }
-  file_exists_in "records/decisions/$v.md" || err "Decision의 $v 파일이 없다"
-done < <(trailer_values Decision)
-
-while IFS= read -r v; do
-  [[ -z "$v" ]] && continue
-  [[ "$v" =~ ^CR-[0-9]{3,}$ ]] || { err "CR 형식이 아니다: $v"; continue; }
-  file_exists_in "records/changes/$v.md" || err "CR의 $v 파일이 없다"
-done < <(trailer_values CR)
-
-while IFS= read -r v; do
-  [[ -z "$v" ]] && continue
   [[ "$v" =~ ^OPEN-[0-9]{3,}$ ]] || { err "Closes 형식이 아니다: $v"; continue; }
-  file_exists_in "records/open/$v.md" || err "Closes의 $v 파일이 없다"
+  exists_in "## $v" docs/open-question.md || err "Closes의 $v 항목이 docs/open-question.md에 없다"
 done < <(trailer_values Closes)
 
 while IFS= read -r v; do
@@ -138,8 +116,8 @@ while IFS=$'\t' read -r st path rest; do
   [[ -z "$st" ]] && continue
   [[ "$st" == R* || "$st" == C* ]] && path="$rest"
   case "$path" in
-    docs/srs/*.md|docs/req/*.md|docs/design/*.md|docs/design/*.html) spec_changed=1 ;;
-    docs/*|records/*|.claude/*|.githooks/*|CLAUDE.md|*/CLAUDE.md|*/AGENTS.md|README.md|.gitignore|.gitattributes|.env.example) ;;
+    docs/req/*.md|docs/design/*.md|docs/design/*.html) spec_changed=1 ;;
+    docs/*|.claude/*|.githooks/*|CLAUDE.md|*/CLAUDE.md|*/AGENTS.md|README.md|.gitignore|.gitattributes|.env.example) ;;
     *) code_changed=1 ;;
   esac
 
@@ -174,15 +152,14 @@ if (( code_changed )) && [[ "$type" == "feat" || "$type" == "fix" ]]; then
   has_trailer Refs || err "feat·fix 코드 변경에는 Refs 트레일러가 필요하다"
 fi
 if (( spec_changed )); then
-  has_trailer Refs || has_trailer Decision || err "SRS·REQ·설계 문서 변경에는 Refs 또는 Decision 트레일러가 필요하다"
+  has_trailer Refs || has_trailer Closes || err "REQ·설계 문서 변경에는 Refs 또는 Closes 트레일러가 필요하다"
 fi
 if [[ ${#approved_touched[@]} -gt 0 ]]; then
-  has_trailer Decision || err "approved 문서 변경에는 Decision 트레일러가 필요하다: ${approved_touched[*]}"
-  has_trailer CR || has_trailer Closes || err "approved 문서 변경에는 CR(변경 요청) 또는 Closes(미결 해결) 트레일러가 필요하다: ${approved_touched[*]}"
+  warn "approved 문서를 바꿨다. 사용자가 수락한 변경인지 확인하고 다시 승인받는다 (harness-psw 7.3): ${approved_touched[*]}"
 fi
 
 if (( errors > 0 )); then
-  echo "커밋 규칙: harness-psw 5.4 (docs/conventions.md)" >&2
+  echo "커밋 규칙: harness-psw 5.4 (docs/design/conventions.md)" >&2
   exit 1
 fi
 exit 0

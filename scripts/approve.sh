@@ -5,7 +5,7 @@
 #
 # 사용법: approve.sh <파일 또는 폴더...>
 #   - status: draft 인 md 파일(frontmatter)과 목업 html(메타 주석)을 approved로 바꾼다
-#   - 미결(open) 또는 끊긴 [OPEN-NNN] 자리표시가 남은 파일은 건너뛴다 (보류된 OPEN은 허용)
+#   - 미정 또는 끊긴 [OPEN-NNN] 자리표시가 남은 파일은 건너뛴다 (보류 항목은 허용, docs/open-question.md)
 #   - 커밋은 하지 않는다
 set -euo pipefail
 
@@ -28,15 +28,26 @@ for target in "$@"; do
   fi
 done
 
+# open-question.md에서 항목의 상태를 읽는다: 미정, 보류, 없음
+open_status() {
+  local oq="$root/docs/open-question.md"
+  [[ -f "$oq" ]] || { echo "없음"; return; }
+  awk -v id="$1" '
+    /^## / { if (cur) exit; cur = ($2 == id); if (cur) found = 1; next }
+    cur && /^- 상태:/ { sub(/^- 상태:[[:space:]]*/, ""); sub(/[[:space:]]*$/, ""); st = $0; exit }
+    END { if (!found) print "없음"; else print (st == "" ? "미정" : st) }
+  ' "$oq"
+}
+
 open_blockers() { # 파일에 남은, 승인을 막는 자리표시
-  local f="$1" id of
+  local f="$1" id st
   for id in $(grep -oE '\[OPEN-[0-9]+\]' "$f" | grep -oE 'OPEN-[0-9]+' | sort -u); do
-    of="$root/records/open/$id.md"
-    if [[ ! -f "$of" ]]; then
-      echo "$id(끊김)"
-    elif ! grep -qE '^status:[[:space:]]*deferred' "$of"; then
-      echo "$id"
-    fi
+    st="$(open_status "$id")"
+    case "$st" in
+      없음) echo "$id(끊김)" ;;
+      보류) ;;
+      *) echo "$id" ;;
+    esac
   done
 }
 
