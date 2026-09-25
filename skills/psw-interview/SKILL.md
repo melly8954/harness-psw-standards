@@ -16,7 +16,7 @@ description: harness-psw 기획 인터뷰를 진행한다. 프로젝트 주제�
 | | `docs/req/functional/<domain>/README.md` (기능 목록) |
 | | `docs/req/functional/<domain>/<NNN>-<feature>.md` (흐름 초안) |
 | | 영역 파일 (`non-functional/` 등, 항목 초안) |
-| | 미결 (`psw-change` 절차 A) |
+| | 미결 (`psw-loop` 절차 A) |
 
 ## 규칙
 
@@ -25,7 +25,7 @@ description: harness-psw 기획 인터뷰를 진행한다. 프로젝트 주제�
 - 한 번에 3~5개씩 묻는다
   → 한꺼번에 많이 물으면 답이 얕아진다
 - 질문마다 선택지와 추천안을 함께 제시한다
-- 모르는 답은 추측하지 않는다. `psw-change` 절차 A로 `docs/open-question.md`에 등록하고 다음 질문으로 넘어간다
+- 모르는 답은 추측하지 않는다. `psw-loop` 절차 A로 `docs/open-question.md`에 등록하고 다음 질문으로 넘어간다
   - 항목의 `체크리스트:` 줄에 체크리스트 ID를 적는다
 - 해당 없는 항목은 `req/README.md`의 해당 없음 표에 체크리스트 ID와 사유를 적는다
 - 답을 반영한 자리에는 체크리스트 ID를 주석으로 남긴다 (예: `<!-- ck-dir-1 -->`)
@@ -37,7 +37,7 @@ description: harness-psw 기획 인터뷰를 진행한다. 프로젝트 주제�
   - 기능 1개 = 사용자가 독립적으로 시작하고 끝내는 행위 1개
   - 규칙·수치나 여러 기능이 함께 쓰는 것은 기능으로 만들지 않고 정책 후보로 적어 둔다 (`psw-req`가 `_policy.md`에 쓴다)
 - 수용 기준, 정책 수치, 권한 매트릭스는 쓰지 않는다. `psw-req`가 쓴다
-- `approved` 문서는 고치지 않는다. 다시 묻는 경우 답이 승인된 내용을 바꾸면 `psw-change` 절차 D로 보낸다
+- `approved` 문서는 고치지 않는다. 다시 묻는 경우 답이 승인된 내용을 바꾸면 `psw-loop` 절차 D로 보낸다
 
 ## 절차
 
