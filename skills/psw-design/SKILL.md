@@ -150,10 +150,9 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 2. 사용자에게 도메인 설계 승인을 요청한다
    - 요약: 화면 수, 새로 정하거나 바꾼 코드 규칙, 남은 미결, 교차 검증 결과
    - 목업은 파일 경로를 알려 사용자가 브라우저로 열어보게 한다. 여는 데 필요한 조건(인터넷 연결 등)은 키트 `web/mockup/README.md`를 보고 함께 알린다
-3. 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 실행한다
+3. 승인은 사용자가 직접 실행한다. 실행 방법은 `.claude/scripts/psw/approve.sh` 머리 주석을 읽고 그대로 안내한다
    - 전체를 한 번에: `bash .claude/scripts/psw/approve.sh docs/design`
    - 도메인만: `bash .claude/scripts/psw/approve.sh docs/design/ui/ia/<domain>.md docs/design/ui/screens/<domain>`
-   - Claude Code CLI 입력창은 `!` 접두사로도 된다. 데스크톱 앱 입력창의 `!`는 실행되지 않는다. Windows에서 `bash`가 WSL로 연결되면 `"C:\Program Files\Git\bin\bash.exe"`를 직접 부른다
    - 에이전트의 승인 시도는 hook이 막는다
 4. 키트의 조각과 설치한 컴포넌트의 클래스가 다르면 키트를 고치도록 사용자에게 알린다
 
@@ -167,7 +166,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    → 역할별 경로 검사가 이 패턴으로 테스트 파일을 가린다
    - 백엔드 테스트 위치(`architecture.md` 백엔드 절)를 반드시 넣는다. 기본 패턴은 `src/test/java/` 같은 경로를 잡지 못한다
 4. 명령이 실제로 도는지 한 번씩 실행해 본다 (개발 서버 기동, lint, AC 테스트)
-5. 커밋 검사·시크릿 스캔 hook과 CI는 `psw-implement` 준비 단계에서 설정한다 (`templates/githooks/`, `templates/github-workflow-psw.yml`)
+5. 커밋 검사·시크릿 스캔 hook과 CI는 `psw-implement` 준비 단계에서 설정한다
 6. 다음 단계: `psw-implement`
 
 ## 커밋

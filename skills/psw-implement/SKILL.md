@@ -38,15 +38,15 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 ## 준비 (프로젝트에서 처음 한 번)
 
 1. 커밋 검사 도구가 harness 스크립트로 정해졌으면
-   - `psw-design`의 `templates/githooks/commit-msg`를 `.githooks/commit-msg`로 복사한다
+   - `templates/githooks/commit-msg`를 `.githooks/commit-msg`로 복사한다
    - `git config core.hooksPath .githooks`
    - 다른 도구(commitlint 등)로 정했으면 그 도구 설정에서 `check-commit-msg.sh`와 같은 규칙을 적용한다
 2. 시크릿 스캔 도구가 gitleaks로 정해졌으면
    - `gitleaks version`으로 설치를 확인한다. 없으면 멈추고 사용자에게 설치를 요청한다. 설치를 대신하지 않는다
-   - `psw-design`의 `templates/githooks/pre-commit`을 `.githooks/pre-commit`으로 복사한다 (위의 `core.hooksPath`를 함께 쓴다)
+   - `templates/githooks/pre-commit`을 `.githooks/pre-commit`으로 복사한다 (위의 `core.hooksPath`를 함께 쓴다)
    - 확인: 가짜 키를 넣은 파일을 스테이징하고 커밋이 막히는지 본 뒤, 그 파일은 스테이징을 풀고 지운다
    - 다른 도구로 정했으면 그 도구의 pre-commit 연결 방법을 따른다
-3. GitHub를 쓰면 `psw-design`의 `templates/github-workflow-psw.yml`을 `.github/workflows/psw.yml`로 복사할지 사용자에게 묻는다
+3. GitHub를 쓰면 `templates/github-workflow-psw.yml`을 `.github/workflows/psw.yml`로 복사할지 사용자에게 묻는다
 
 ## FR 흐름
 

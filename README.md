@@ -49,10 +49,10 @@ bash install.sh <프로젝트 경로>
 | 스킬 7종 (`psw-init`, `psw-interview`, `psw-req`, `psw-design`, `psw-crosscheck`, `psw-implement`, `psw-loop`) | 완료 |
 | 에이전트 3종 (`implementer`, `reviewer`, `verifier`) | 완료 |
 | 검사 스크립트 10종 | 완료 |
-| 실제 프로젝트 적용 검증 | 예정 (설계서 10.4) |
+| 실제 프로젝트 적용 검증 | 진행 중 (설계서 10.4): `moa`에서 준비~구현 준비까지 확인, 구현 단계(`psw-implement`, 에이전트, CI)는 미확인 |
 
 ## 승인
 
 - 문서 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 한다: `bash .claude/scripts/psw/approve.sh <경로>`
-  - Claude Code CLI 입력창은 `!` 접두사로도 된다. 데스크톱 앱 입력창의 `!`는 실행되지 않는다
+  - 실행 방법(입력창 `!` 접두사, WSL 대처)은 [`scripts/approve.sh`](scripts/approve.sh) 머리 주석에 있다
 - 에이전트의 승인 시도는 `psw-init`이 설정한 hook이 막는다

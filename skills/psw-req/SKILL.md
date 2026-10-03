@@ -92,9 +92,8 @@ description: harness-psw 요구사항(REQ)의 상세를 채운다. 인터뷰가 
 1. 도메인 단위로 승인을 요청할 수 있다
    - 요약: 도메인별 FR 수와 우선순위 분포, 남은 미결(보류 포함), 정책 항목·상태 전이 수, 범위 밖 항목
 2. 사용자가 승인한 파일만 `status: approved`가 된다
-   - 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 실행한다: `bash .claude/scripts/psw/approve.sh docs/req` (도메인만이면 `docs/req/functional/<domain>`)
-     - Claude Code CLI 입력창은 `!` 접두사로도 된다. 데스크톱 앱 입력창의 `!`는 실행되지 않는다
-     - Windows에서 `bash`가 WSL로 연결되면 `"C:\Program Files\Git\bin\bash.exe"`를 직접 부른다
+   - 승인은 사용자가 직접 실행한다: `bash .claude/scripts/psw/approve.sh docs/req` (도메인만이면 `docs/req/functional/<domain>`)
+     - 실행 방법은 `.claude/scripts/psw/approve.sh` 머리 주석을 읽고 그대로 안내한다
    - 영역 파일과 `actors.md`도 같은 방법으로 승인한다
    - 에이전트의 승인 시도는 hook이 막는다
    - 승인 커밋 트레일러: `Refs: <도메인 접두사>`

@@ -1,6 +1,6 @@
 # harness-psw
 
-> 신규 프로젝트용 하네스 설계서다. 기존 하네스를 대체하기 위해 정리 중이다.
+> 신규 프로젝트용 하네스 설계서다.
 > `(프로젝트별 결정)`은 프로젝트마다 채우는 항목이다 (1.5).
 
 ## 목차
@@ -111,8 +111,8 @@
   - `approved`: 사용자 승인. 다음 단계의 입력으로 쓸 수 있다
 - MUST: `approved`로는 사용자만 바꾼다
   - 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 실행한다: `bash .claude/scripts/psw/approve.sh <경로>`
-    - Claude Code CLI 입력창에서는 `! bash .claude/scripts/psw/approve.sh <경로>`로도 된다. 데스크톱 앱 입력창의 `!`는 명령으로 실행되지 않고 메시지로 간다
-    - Windows에서 `bash`가 WSL로 연결돼 실패하면 Git Bash를 직접 부른다: `"C:\Program Files\Git\bin\bash.exe" .claude/scripts/psw/approve.sh <경로>`
+    - 실행 방법 안내(입력창 `!` 접두사, WSL 대처)는 `approve.sh` 머리 주석이 소유한다. 스킬은 그 주석을 가리키기만 한다
+      → 안내를 여러 스킬에 옮겨 적으면 바뀔 때 한쪽만 고쳐진다
   - 에이전트(메인 세션 포함)가 `status: approved`를 쓰거나 `approve.sh`를 실행하면 hook(`guard-paths.sh`)이 막는다
   - `approve.sh`는 미정·끊긴 자리표시가 남은 파일을 건너뛴다
 - 적용 대상은 REQ(`docs/req/`)와 설계 문서(`docs/design/`)다
@@ -774,7 +774,7 @@ const response: any = await pgClient.approve(payload);
   → 내부 함수 단위로 쪼개면 AC와 1:1로 대응되지 않는다
 - 내부 함수 단위 테스트는 만들지 않는다
 - `[MUST]` AC는 테스트나 직접 검증이 필수다. `[SHOULD]` AC의 테스트 코드는 선택이다
-- AC 테스트는 구현 코드보다 먼저 작성한다. 입력은 FR의 AC와 구현자가 먼저 쓴 계약 코드다 (9.2)
+- AC 테스트는 검증자가 구현 코드보다 먼저 작성한다 (9.1). 입력은 FR의 AC와 구현자가 먼저 쓴 계약 코드다 (9.2)
   → 구현에 맞춰 테스트를 쓰는 것을 막는다
 - 테스트 이름에 AC ID를 단다 (예: `FR-ORD-010 AC-1: 비회원 주문 생성`)
 - MUST: 테스트를 통과시키려고 테스트를 고치지 않는다
@@ -787,7 +787,6 @@ const response: any = await pgClient.approve(payload);
   → 저장소에 남기면 사실상 테스트 코드가 된다
 - 코드가 바뀌면 ID 추적(1.2)으로 영향받는 기능을 찾아, 직접 검증 AC를 다시 검증한다
   → AC 테스트 코드는 CI가 자동으로 다시 확인한다
-- AC 테스트는 검증자가 구현 전에 작성한다 (9.1)
 
 ### 5.3 환경변수·시크릿 관리
 
