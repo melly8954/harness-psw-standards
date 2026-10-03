@@ -91,6 +91,7 @@ description: harness-psw 요구사항(REQ)의 상세를 채운다. 인터뷰가 
 
 ## 커밋
 
+- `dev` 브랜치에 커밋한다
 - 최초 작성: `Refs:`에 도메인·영역 접두사 (예: `Refs: FR-ORD, NFR-PERF`)
 - 갱신: `Refs:`에 바뀐 ID, 미결을 해결했으면 `Closes:`
 - 메시지 예: `docs: 주문 도메인 REQ 상세 작성`

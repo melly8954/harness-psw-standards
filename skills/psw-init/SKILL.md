@@ -16,7 +16,8 @@ description: harness-psw 프로젝트 골격(CLAUDE.md, docs/, open-question.md,
 
 ### 1. 상태 확인
 
-- git 저장소가 아니면 사용자에게 `git init` 여부를 묻는다
+- git 저장소가 아니면 사용자에게 `git init` 여부를 묻는다. 기본 브랜치는 `main`으로 만든다 (`git init -b main`)
+- 이미 저장소면 현재 브랜치와 `dev` 브랜치가 있는지 확인한다
 - 아래 경로 중 이미 있는 것을 확인한다
   - `CLAUDE.md`, `docs/`, `.env.example`, `.gitignore`, `.gitattributes`, `.claude/settings.json`
 - MUST: 이미 있는 파일은 덮어쓰지 않는다. 목록을 보고하고 진행 여부를 묻는다
@@ -68,12 +69,20 @@ docs/design/
 - `CLAUDE.md`에 `{{`가 남아 있지 않은지 확인한다
 - hook 동작 확인: `printf '{"tool_name":"Bash","tool_input":{"command":"approve.sh"}}' | bash .claude/scripts/psw/guard-paths.sh hook` 가 exit 2로 끝나야 한다
 
-### 8. 보고
+### 8. 첫 커밋과 `dev` 브랜치 (harness-psw 5.1)
+
+- 사용자 승인을 받고 골격을 커밋한다. 메시지 예: `chore: harness-psw 골격 생성`
+  - 새 저장소면 `main`에 첫 커밋을 한다
+- `dev` 브랜치가 없으면 만들고 옮겨 간다: `git switch -c dev`
+  → 기획·설계 문서는 `dev`에 커밋한다. `main`은 사용자가 배포할 때만 바뀐다
+- 이미 있는 저장소에서 `main`에 다른 커밋이 쌓여 있으면 `dev`를 어디서 만들지 사용자에게 묻는다
+
+### 9. 보고
 
 - 생성한 파일과 디렉터리 목록
 - 건너뛴 파일과 이유
+- 현재 브랜치 (`dev`여야 한다)
 - 다음 단계: `psw-interview`로 기획 인터뷰를 시작한다
-- 커밋은 사용자 승인 후에 한다. 메시지 예: `chore: harness-psw 골격 생성`
 
 ## 하지 않는 것
 

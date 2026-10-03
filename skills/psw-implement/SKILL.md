@@ -10,7 +10,7 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 ## 전제 (구현 착수 조건)
 
 - 대상 FR 파일과 관련 설계 문서가 `approved`다
-- 프로젝트별 결정이 채워져 있다 (`psw-design` 7단계)
+- 프로젝트별 결정이 채워져 있다 (`psw-design` 1·3·7단계)
   - `docs/design/conventions.md` 도구 절과 AC 테스트 절, `CLAUDE.md` 명령 표
   - `.claude/psw.conf`의 테스트 경로 패턴
   - 커밋 검사 hook 설정
