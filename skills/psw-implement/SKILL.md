@@ -84,6 +84,7 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 - diff를 뽑는다: `git diff dev...feat/<FR-ID>-<요약>`
 - `reviewer`를 "코드 검토"로 호출한다. 넘길 것: diff 전문, FR 경로, 관련 `_policy.md`·화면 경로
 - CHANGES면 지적을 구현자에게 넘겨 4단계로 돌아간다
+- 다시 검토할 때는 diff 전문과 지난 회차 지적 표를 함께 넘긴다. 지적 번호(N1, N2, …)는 회차를 넘어 이어 쓴다
 
 ### 7. 검증 (검증자)
 

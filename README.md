@@ -53,5 +53,6 @@ bash install.sh <프로젝트 경로>
 
 ## 승인
 
-- 문서 승인은 사용자가 직접 한다: `! bash .claude/scripts/psw/approve.sh <경로>`
+- 문서 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 한다: `bash .claude/scripts/psw/approve.sh <경로>`
+  - Claude Code CLI 입력창은 `!` 접두사로도 된다. 데스크톱 앱 입력창의 `!`는 실행되지 않는다
 - 에이전트의 승인 시도는 `psw-init`이 설정한 hook이 막는다

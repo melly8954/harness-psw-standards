@@ -61,6 +61,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    - 프로젝트별 결정: 시크릿 저장소 도구를 사용자에게 정하게 하고 배포 단위 절에 적는다. 정하지 못하면 미결로 등록한다
 3. 프로젝트별 결정: 프론트 키트의 프레임워크, 태그, 테마를 사용자에게 정하게 하고 `architecture.md` UI 절에 적는다
    - 키트에 없는 프레임워크면 멈추고 알린다. 키트에 프레임워크를 먼저 추가한다
+   - 키트를 고쳐 쓰는데 아직 태그가 없으면 커밋 해시로 적고 미결(보류)로 등록한다. 태그가 나오면 바꾸고 미결을 닫는다
 4. 프로젝트별 결정: 백엔드 키트의 프레임워크, 태그, 헬퍼, 패키지 이름을 사용자에게 정하게 하고 `architecture.md` 백엔드 절에 적는다
    - 태그 조회: `git ls-remote --tags --sort=-v:refname <키트 저장소> 'v*'`. 권장은 가장 최근 태그
    - 헬퍼 목록과 용도는 키트의 `<프레임워크>/helpers/*/HELPER.md`
@@ -83,7 +84,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 4. `ui/ia/README.md`에 도메인 색인, 셸 없는 화면, 메뉴 계층, 화면 흐름을 쓴다 (`references/ia-readme.md`)
    - 메뉴를 관리 기능으로 바꾸는 요구사항이 있으면, 메뉴 계층이 초기 메뉴라는 것과 근거 FR을 적는다
 5. 셸을 만든다
-   - 형태와 설정(키트 셸 틀의 설정 구역)을 사용자에게 정하게 하고 `architecture.md` UI 절에 적는다
+   - 형태와 설정(키트 셸 틀의 설정 구역, 모바일 메뉴 방식 포함)을 사용자에게 정하게 하고 `architecture.md` UI 절에 적는다
    - 키트의 셸 틀을 `ui/kit/shell.js`로 복사하고, 설정과 메뉴만 고친다. 방법은 키트의 `web/mockup/README.md`
    - 메뉴는 `ia/README.md` 메뉴 계층을 그대로 옮긴다. 메뉴가 바뀌면 `ia/README.md`를 먼저 고친다
 
@@ -96,6 +97,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 2. 키트의 `<프레임워크>/APPLY.md` 절차대로 `backend/`에 적용한다 (`apply.sh`, 헬퍼·패키지 지정)
 3. 문서 조각을 반영한다 (조각마다 `docs-fragments/<조각>/README.md`)
    - REQ 초안: `psw-loop`로 기획 루프를 호출해 넘긴다. 기획 루프가 범위를 확인하고 REQ로 만든다
+     - 같은 요구가 이미 승인된 REQ에 있으면 루프를 부르지 않고, 조각 → REQ ID 대응표만 `architecture.md` 백엔드 절에 남긴다
    - 조각의 역할 이름(예: ADMIN)이 `docs/req/actors.md`와 다르면 코드를 actors.md에 맞춘다
    - 다 넣었으면 `docs-fragments/`를 지운다
 4. `architecture.md`를 채운다
@@ -133,7 +135,10 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    - 컴포넌트는 키트 조각을 그대로 쓰고, 컴포넌트를 쓴 요소에 `data-component`를 단다
    - 기본, 빈 상태, 로딩, 오류 네 가지 상태를 채운다
    - `components.md`에 있는 컴포넌트만 쓴다. 새 컴포넌트가 필요하면 `components.md`에 먼저 추가하고 프로젝트에 컴포넌트를 추가한다
+   - 화면이 많으면 생성기로 찍어 내도 된다. 키트 조각을 그대로 쓰고, 생성기와 화면 정의는 `ui/kit/`에 커밋한다 (키트의 목업 빌더가 있으면 그것을 쓴다)
 3. `ia/README.md` 도메인 색인의 화면 수를 고친다
+4. 선택: 목업 모아 보기 `ui/gallery.html`을 만든다. 키트 템플릿이 있으면 쓴다
+5. 선택: 좁은 화면(예: 360px)에서 목업의 가로 넘침을 검사한다. 키트에 검사 도구가 있으면 쓴다
 
 ### 5. 교차 검증
 
@@ -145,7 +150,10 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 2. 사용자에게 도메인 설계 승인을 요청한다
    - 요약: 화면 수, 새로 정하거나 바꾼 코드 규칙, 남은 미결, 교차 검증 결과
    - 목업은 파일 경로를 알려 사용자가 브라우저로 열어보게 한다. 여는 데 필요한 조건(인터넷 연결 등)은 키트 `web/mockup/README.md`를 보고 함께 알린다
-3. 승인은 사용자가 입력창에서 직접 실행한다: `! bash .claude/scripts/psw/approve.sh <설계 문서·목업 경로>`
+3. 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 실행한다
+   - 전체를 한 번에: `bash .claude/scripts/psw/approve.sh docs/design`
+   - 도메인만: `bash .claude/scripts/psw/approve.sh docs/design/ui/ia/<domain>.md docs/design/ui/screens/<domain>`
+   - Claude Code CLI 입력창은 `!` 접두사로도 된다. 데스크톱 앱 입력창의 `!`는 실행되지 않는다. Windows에서 `bash`가 WSL로 연결되면 `"C:\Program Files\Git\bin\bash.exe"`를 직접 부른다
    - 에이전트의 승인 시도는 hook이 막는다
 4. 키트의 조각과 설치한 컴포넌트의 클래스가 다르면 키트를 고치도록 사용자에게 알린다
 

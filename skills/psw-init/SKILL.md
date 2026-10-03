@@ -58,7 +58,7 @@ docs/design/
 
 - 설정 파일을 바꾸는 작업이므로 사용자에게 내용을 보여주고 동의를 받는다
   - 하는 일: 모든 에이전트(메인 세션 포함)가 문서를 `approved`로 바꾸거나 `approve.sh`를 실행하는 것을 막고, 하위 에이전트의 편집 경로를 역할별로 제한한다
-  - 승인은 사용자가 입력창에서 직접 실행한다: `! bash .claude/scripts/psw/approve.sh <경로>`
+  - 승인은 사용자가 터미널의 bash 셸(Windows는 Git Bash)에서 직접 실행한다: `bash .claude/scripts/psw/approve.sh <경로>` (Claude Code CLI 입력창은 `!` 접두사로도 된다. 데스크톱 앱은 안 된다)
 - `.claude/settings.json`이 없으면 `templates/settings.json`을 복사한다
 - 있으면 `hooks.PreToolUse`에 템플릿의 항목을 추가한다. 같은 command가 이미 있으면 추가하지 않는다
 - hook은 워크스페이스 신뢰를 수락한 뒤에 동작한다
