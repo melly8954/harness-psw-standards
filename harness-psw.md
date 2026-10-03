@@ -210,7 +210,7 @@ REQ ← 설계(화면, 아키텍처·보안) ← 테스트·커밋
 | 프론트 키트: 프레임워크, 키트 태그, 테마, 셸 형태·설정 (4.4, 4.5) | 설계 착수 직후, UI 기초 작업 전 | `design/architecture.md` UI 절 |
 | 백엔드 키트: 프레임워크, 키트 태그, 선택 헬퍼·모듈 (4.7) | 설계 착수 직후, 백엔드 기초 전 | `design/architecture.md` 백엔드 절 |
 | 시크릿 저장소 도구 (5.3) | 아키텍처 작성 때 (설계 승인 전) | `design/architecture.md` 배포 단위 |
-| lint·포맷·커밋 검사·시크릿 스캔·AC 테스트 도구 (5.1, 5.4) | 코드 규칙 작성 때 (설계 승인 전) | `design/conventions.md` 도구 절 |
+| lint·포맷·커밋 검사·시크릿 스캔·AC 테스트 도구 (5.1, 5.3, 5.4). 커밋 검사·시크릿 스캔은 하네스 기본안이 있다 | 코드 규칙 작성 때 (설계 승인 전) | `design/conventions.md` 도구 절 |
 | `CLAUDE.md` 명령 (0.1) | 구현 착수 전 | `CLAUDE.md` |
 
 - 각 결정은 기록 위치에 값과 날짜·이유를 함께 적는다 (8.1)
@@ -231,6 +231,7 @@ REQ ← 설계(화면, 아키텍처·보안) ← 테스트·커밋
     settings.json           승인 보호·역할 경로 hook (psw-init)
     psw.conf                프로젝트 설정: 테스트 경로 패턴 (psw-design)
   .githooks/commit-msg      커밋 메시지 검사 (psw-implement)
+  .githooks/pre-commit      시크릿 스캔 (psw-implement, gitleaks로 정했을 때)
   docs/
     open-question.md        미정·보류 사항 (8.2)
     glossary.md             용어집 (8.3)
@@ -781,7 +782,9 @@ const response: any = await pgClient.approve(payload);
   - **MUST: 시크릿이 필요하면 사용자에게 설정을 요청한다**
 - 커밋 금지
   - NEVER: 시크릿을 저장소에 커밋하지 않는다
-  - 커밋 전 스캔과 CI 스캔으로 강제한다 (예: gitleaks)
+  - 커밋 전 스캔으로 강제한다. 도구는 프로젝트별 결정이고 기본안은 gitleaks다 (`.githooks/pre-commit`, `psw-implement` 준비에서 연결)
+    → 커밋 검사 스크립트처럼 스택과 상관없이 동작한다. 실행 파일이 따로 필요해 하네스 생성 시점이 아니라 구현 준비에서 설치를 확인한다
+  - CI 스캔은 프로젝트가 원하면 더한다
 - `.env`
   - git에서 제외한다
   - `.env.example`에 키 이름만 적어 커밋한다
@@ -1142,6 +1145,7 @@ harness-psw-standards/
 
 - 스킬 절차는 스크립트처럼 자동 시험할 수 없다. 첫 실제 프로젝트에서 단계마다 확인하고 설계서와 스킬을 고친다
 - 편집 시점 hook은 워크스페이스 신뢰를 수락해야 동작한다. 첫 실행 때 동작을 확인한다
+- 시크릿 스캔 hook(`templates/githooks/pre-commit`)의 gitleaks 명령은 하네스 저장소에서 실행해 보지 못했다. 첫 적용의 구현 준비에서 막히는지 확인한다
 
 ### 10.5 검사 스크립트
 

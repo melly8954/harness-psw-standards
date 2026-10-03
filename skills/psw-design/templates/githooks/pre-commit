@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# harness-psw 시크릿 스캔 (5.3). 스테이징된 변경에 비밀값이 섞였는지 검사한다.
+# 설정: git config core.hooksPath .githooks (commit-msg와 같은 폴더)
+# 시크릿 스캔 도구를 gitleaks로 정한 프로젝트에서만 복사한다 (docs/design/conventions.md 도구 절).
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "harness-psw: gitleaks가 설치돼 있지 않아 커밋을 막았다. 설치하거나 conventions.md에서 시크릿 스캔 도구를 바꾼다" >&2
+  exit 1
+fi
+exec gitleaks git --pre-commit --staged --redact --no-banner

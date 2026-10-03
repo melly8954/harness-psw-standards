@@ -116,6 +116,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    - lint, 포맷, 커밋 검사, 시크릿 스캔, AC 테스트 도구. 결정마다 `〔YYYY-MM-DD〕 <이유>`를 붙인다
      - 백엔드 키트의 기본 도구(포맷·lint·AC 테스트·CI)를 그대로 쓰면 근거에 키트 태그를 적는다
      - 커밋 검사 도구의 기본안은 하네스 스크립트(`check-commit-msg.sh`)다. 스택과 상관없이 동작한다
+     - 시크릿 스캔 도구의 기본안은 gitleaks다. 스택과 상관없이 동작한다. 실행 파일이 따로 필요하므로 설치 여부는 `psw-implement` 준비에서 확인한다
    - AC 테스트 작성법 (백엔드는 키트 `APPLY.md`의 AC 테스트 절에서 옮긴다)
 
 ### 4. 도메인 화면
@@ -158,7 +159,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    → 역할별 경로 검사가 이 패턴으로 테스트 파일을 가린다
    - 백엔드 테스트 위치(`architecture.md` 백엔드 절)를 반드시 넣는다. 기본 패턴은 `src/test/java/` 같은 경로를 잡지 못한다
 4. 명령이 실제로 도는지 한 번씩 실행해 본다 (개발 서버 기동, lint, AC 테스트)
-5. 커밋 검사 hook과 CI는 `psw-implement` 준비 단계에서 설정한다 (`templates/githooks/`, `templates/github-workflow-psw.yml`)
+5. 커밋 검사·시크릿 스캔 hook과 CI는 `psw-implement` 준비 단계에서 설정한다 (`templates/githooks/`, `templates/github-workflow-psw.yml`)
 6. 다음 단계: `psw-implement`
 
 ## 커밋
