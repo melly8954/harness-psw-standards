@@ -59,4 +59,9 @@ version="$(git -C "$HARNESS_DIR" rev-parse --short HEAD 2>/dev/null || echo unkn
 echo "$version" > "$CLAUDE_DIR/psw-version"
 
 echo "설치 완료 (harness-psw $version): $TARGET"
-echo "다음: 프로젝트에서 psw-init 스킬로 골격을 만든다."
+# 골격(CLAUDE.md)이 이미 있으면 다시 설치한 것이다. 골격과 프로젝트 설정은 그대로 둔다
+if [[ -f "$TARGET/CLAUDE.md" ]]; then
+  echo "다시 설치: 골격(CLAUDE.md, docs/)과 프로젝트 설정(settings.json, psw.conf, .githooks)은 바꾸지 않았다. 바뀐 .claude/를 커밋한다."
+else
+  echo "다음: 프로젝트에서 psw-init 스킬로 골격을 만든다."
+fi
