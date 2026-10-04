@@ -726,10 +726,13 @@ req/functional/auth/
 | 문서 커밋 위치 | `dev`에 바로 커밋하고 push한다 | `dev`에서 `docs/<주제>`를 만들어 커밋하고, PR로 합친다 |
 | 문서 승인 | `dev`에서 `approve.sh` → 커밋 → push | `docs/<주제>`에서 `approve.sh` → 커밋 → PR. 팀원 리뷰 뒤 병합한다 |
 | 기능 병합 | 사용자 확인 뒤 로컬에서 병합하고 `git push origin dev` | 사용자 확인 뒤 PR을 연다. 병합은 사용자(팀)가 GitHub에서 한다 |
-| GitHub `dev` 규칙 (사용자가 설정) | force push 금지, 삭제 금지 | force push 금지, 삭제 금지, PR 필수, CI 통과 필수 |
+| GitHub `dev` 규칙 (사용자가 설정) | force push 금지, 삭제 금지 | force push 금지, 삭제 금지, PR 필수(병합 방법 merge·rebase), CI 통과 필수(커밋 메시지·시크릿 검사 작업) |
+| 하네스 다시 설치 커밋 | `dev`에 바로 커밋·push | `chore/<요약>` 브랜치에 커밋하고 PR로 넣는다 |
 
   - 두 방식 모두 `main`은 PR 필수를 권장한다. 혼자라면 필요한 승인 수를 0으로 둔다
   - 규칙은 `dev`·`main`에만 건다. 모든 브랜치에 걸면 기능 브랜치의 `--force-with-lease`와 원격 정리가 막힌다
+  - "Restrict updates"는 켜지 않는다. 우회 권한이 없는 사람은 PR 병합까지 막힌다 (moa 2026-10: 켜 둔 채 push가 거부됐다)
+  - PR 방식이면 저장소 설정에서 head 브랜치 자동 삭제를 켜 두면 병합 뒤 원격 브랜치 정리가 따로 필요 없다
   - 에이전트는 PR을 열 수 있지만 병합하지 않는다
   → 혼자 하는 프로젝트에서 문서 수정·승인마다 PR을 거치면 절차만 늘어난다. 팀에서는 문서 변경도 리뷰를 거쳐야 하므로 PR이 승인 절차와 겹친다
 - 원격 (`origin`이 없으면 push 단계를 모두 건너뛴다. PR 방식은 원격이 있어야 한다)
@@ -1221,6 +1224,8 @@ harness-psw-standards/
   - 에이전트: `.claude/agents/`
   - 검사 스크립트: `.claude/scripts/psw/`
 - 다시 설치하면 하네스가 소유한 파일(`psw-*` 스킬, 하네스 에이전트 3개, `scripts/psw/`)만 교체하고, 프로젝트의 다른 파일은 건드리지 않는다
+  - 다시 설치한 커밋은 병합 방식(5.1)을 따른다. PR 방식이면 브랜치에 커밋하고 PR로 넣는다
+  - `.githooks`가 템플릿과 다르면 `install.sh`가 알린다. 프로젝트 설정이라 덮어쓰지 않는다
   - 하네스에서 없어진 `psw-*` 스킬은 다시 설치할 때 지운다
 - 설치한 하네스 버전(커밋 해시)을 `.claude/psw-version`에 남긴다
 - hook·CI 설정은 설치 시 넣지 않는다

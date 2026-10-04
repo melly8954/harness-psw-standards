@@ -62,6 +62,9 @@ echo "설치 완료 (harness-psw $version): $TARGET"
 # 골격(CLAUDE.md)이 이미 있으면 다시 설치한 것이다. 골격과 프로젝트 설정은 그대로 둔다
 if [[ -f "$TARGET/CLAUDE.md" ]]; then
   echo "다시 설치: 골격(CLAUDE.md, docs/)과 프로젝트 설정(settings.json, psw.conf, .githooks)은 바꾸지 않았다. 바뀐 .claude/를 커밋한다."
+  if grep -q 'dev 병합 방식: *PR' "$TARGET/CLAUDE.md" 2>/dev/null; then
+    echo "  병합 방식이 PR이다: dev에 바로 커밋하지 말고 브랜치(예: chore/reinstall-harness)에 커밋해 PR로 넣는다"
+  fi
   # hook은 프로젝트 설정이라 덮어쓰지 않는다. 템플릿과 다르면 알린다 (프로젝트에서 고친 것일 수 있다)
   for hook in commit-msg pre-commit; do
     tmpl="$HARNESS_DIR/skills/psw-implement/templates/githooks/$hook"
