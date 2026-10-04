@@ -168,6 +168,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    → 역할별 경로 검사가 이 패턴으로 테스트 파일을 가린다
    - 백엔드 테스트 위치(`architecture.md` 백엔드 절)를 반드시 넣는다. 기본 패턴은 `src/test/java/` 같은 경로를 잡지 못한다
 4. 명령이 실제로 도는지 한 번씩 실행해 본다 (개발 서버 기동, lint, AC 테스트)
+   - 프론트 명령이 멈추거나 실패하면 키트 `web/frameworks/<프레임워크>/README.md`의 문제 해결 절을 먼저 본다 (예: Windows `@swc/core` 캐시 권한)
 5. 커밋 검사·시크릿 스캔 hook과 CI는 `psw-implement` 준비 단계에서 설정한다
 6. 다음 단계: `psw-implement`
 
