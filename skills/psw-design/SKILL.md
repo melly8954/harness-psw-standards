@@ -23,7 +23,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 
 ## 규칙
 
-- 전제: 설계할 도메인의 REQ가 `approved`다
+- 전제: 설계할 도메인의 REQ가 `approved`이고, 용어집(`docs/glossary.md`)이 비어 있지 않다 (`loop-status.sh`가 확인한다)
 - 템플릿: `references/*.md`
 - 프론트 키트
   - 저장소: `https://github.com/melly8954/harness-psw-frontend.git` (비공개). 로컬 사본 `C:\psw\github\harness-psw-frontend`가 있으면 그 경로를 써도 된다
@@ -153,6 +153,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 3. 승인은 사용자가 직접 실행한다. 실행 방법은 `.claude/scripts/psw/approve.sh` 머리 주석을 읽고 그대로 안내한다
    - 전체를 한 번에: `bash .claude/scripts/psw/approve.sh docs/design`
    - 도메인만: `bash .claude/scripts/psw/approve.sh docs/design/ui/ia/<domain>.md docs/design/ui/screens/<domain>`
+   - 안내에 실행할 폴더(프로젝트 루트 절대 경로)와 브랜치(`dev`)를 적는다. `approve.sh`는 기능 브랜치에서는 멈춘다
    - 에이전트의 승인 시도는 hook이 막는다
 4. 키트의 조각과 설치한 컴포넌트의 클래스가 다르면 키트를 고치도록 사용자에게 알린다
 
@@ -162,6 +163,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 
 1. 1·3단계의 프로젝트별 결정(시크릿 저장소, 도구, AC 테스트 작성법)이 승인 문서에 채워져 있는지 확인한다. 비어 있으면 멈추고 해당 단계로 돌아간다
 2. 개발 서버, lint, AC 테스트 명령 → `CLAUDE.md` 명령 표 (프론트는 키트 프레임워크 절차, 백엔드는 키트 `APPLY.md`의 명령 표에서 가져온다)
+   - 테스트 하나만 실행하는 명령도 채운다 (예: `./gradlew test --tests '<클래스>'`). 구현 반복 중에는 이 명령을 쓰고 전체 검사는 보고 직전에 한 번 돌린다 (harness-psw 9.2)
 3. AC 테스트 파일 경로 → `.claude/psw.conf`의 `PSW_TEST_GLOBS` (`templates/psw.conf`에서 시작)
    → 역할별 경로 검사가 이 패턴으로 테스트 파일을 가린다
    - 백엔드 테스트 위치(`architecture.md` 백엔드 절)를 반드시 넣는다. 기본 패턴은 `src/test/java/` 같은 경로를 잡지 못한다

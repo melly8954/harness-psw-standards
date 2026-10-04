@@ -10,6 +10,7 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 ## 전제 (구현 착수 조건)
 
 - 대상 FR 파일과 관련 설계 문서가 `approved`다
+- 용어집이 비어 있지 않다 (`.claude/scripts/psw/loop-status.sh`에 용어집 오류가 없다)
 - 프로젝트별 결정이 채워져 있다 (`psw-design` 1·3·7단계)
   - `docs/design/conventions.md` 도구 절과 AC 테스트 절, `CLAUDE.md` 명령 표
   - `.claude/psw.conf`의 테스트 경로 패턴
@@ -31,6 +32,15 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 - 같은 AC가 3회 FAIL하면 멈추고 사용자에게 보고한다 (설계·요구사항 문제로 본다)
 - 구현자·검증자가 "상위 결함"을 보고하면 흐름을 멈추고 `psw-loop`로 해당 루프를 호출한다
   - 설계 결함(코드 규칙, 테마·UI 컴포넌트 변경 포함) → 설계 루프 (`psw-design`), 요구사항 결함 → 기획 루프
+  - 문서 수정과 승인은 `dev`에서 한다. 브랜치를 옮기고 돌아오는 절차는 `psw-loop` G를 따른다
+- 원격(`origin`)이 있으면 (harness-psw 5.1)
+  - 기능 브랜치는 첫 커밋 뒤 `git push -u origin feat/<FR-ID>-<요약>`로 올리고, 하위 에이전트가 커밋을 보고할 때마다 오케스트레이터가 push한다. 하위 에이전트는 push하지 않는다
+  - `dev` push는 병합 확인(9단계)에서 함께 묻는다
+  - 기능 브랜치는 `psw-loop` G의 rebase 뒤에만 `git push --force-with-lease`로 덮어쓴다. `main`·`dev`에는 force push하지 않는다
+- 검사 범위 (harness-psw 9.2)
+  - 반복 중에는 바꾼 부분과 관련된 검사·테스트만 돌린다 (이 FR의 AC 테스트, 바뀐 모듈의 lint). `CLAUDE.md` 명령 표의 "하나만 실행" 명령을 쓴다
+  - 전체 검사(빌드, 전체 테스트)는 구현자의 완료 보고 직전, 검증자의 판정 직전에 한 번씩 돌린다. 5단계 도구 검사는 한 번 돌린다
+  - 하위 에이전트를 호출할 때 이 범위를 함께 알린다
 - MUST: `dev`로 합치기 전에 FR마다 사용자 확인을 받는다
 - 병합은 개별 커밋을 유지한다. squash하지 않는다
 - NEVER: `main`에 커밋하거나 합치지 않는다. 배포는 사용자가 한다
@@ -53,7 +63,7 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 ### 1. 대상 선택
 
 - `approved` FR 중 의존 순서가 앞선 것을 고른다 (`.claude/scripts/psw/rtm.sh`로 현황 확인)
-- `dev`에서 기능 브랜치를 만든다
+- `dev`에서 기능 브랜치를 만든다. 원격이 있으면 첫 커밋(계약 또는 테스트) 뒤 원격에 올린다
 
 ### 2. 계약 (구현자)
 
@@ -76,7 +86,7 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 
 ### 5. 도구 검사
 
-- lint·타입 검사를 실행한다 (`CLAUDE.md` 명령)
+- lint·타입 검사를 실행한다 (`CLAUDE.md` 명령). 전체를 한 번 돌린다
 - 실패하면 4단계로 돌아간다
 
 ### 6. 코드 검토 (검토자)
@@ -106,14 +116,19 @@ description: harness-psw 구현 흐름을 진행한다. 승인된 FR을 하나�
 - AC 결과: AC-1 PASS(테스트) / AC-2 PASS(직접 확인) / AC-3 FAIL [SHOULD] 사유: ...
 - 검토 지적: N건 → 처리 결과
 - 남은 미결: <없음 또는 목록>
-→ dev에 합칠까요?
+→ dev에 합치고 origin에 올릴까요?
 ```
+
+- 원격이 없으면 마지막 줄은 `→ dev에 합칠까요?`로 묻는다
 
 ### 10. 병합과 정리
 
 1. `dev`로 합친다: `git switch dev` 후 `git merge feat/<FR-ID>-<요약>`
-2. 기능 브랜치를 지운다: `git branch -d feat/<FR-ID>-<요약>`
-3. 병합으로 바뀐 코드가 다른 FR에 영향을 주는지 `find-refs.sh`로 찾고, 영향받은 FR의 직접 확인 AC를 다시 확인한다
+2. 원격이 있으면 `git push origin dev`. 그 사이 쌓인 문서 커밋도 함께 올라가고, CI가 돈다
+3. 기능 브랜치를 지운다
+   - 원격: `git push origin --delete feat/<FR-ID>-<요약>` (`dev` push가 끝난 뒤)
+   - 로컬: `git branch -d feat/<FR-ID>-<요약>`
+4. 병합으로 바뀐 코드가 다른 FR에 영향을 주는지 `find-refs.sh`로 찾고, 영향받은 FR의 직접 확인 AC를 다시 확인한다
    → AC 테스트 코드가 있는 AC는 테스트 실행·CI가 다시 확인한다
 
 ## 보고

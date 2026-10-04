@@ -86,6 +86,8 @@ description: harness-psw 요구사항(REQ)의 상세를 채운다. 인터뷰가 
 1. REQ에 나온 도메인 핵심 용어(엔터티, 상태, 역할 이름)를 `docs/glossary.md`에 채운다
    - 코드 이름은 영어로 정한다. 사용자에게 확인받는다
    - 같은 개념을 다르게 부른 곳이 있으면 하나로 맞추고, 버린 말은 `쓰지 않는 말`에 적는다
+2. 건너뛰지 않는다. FR이 있는데 용어집이 비어 있으면 `loop-status.sh`가 "종료 불가"를 내고, 설계·구현 착수 조건도 막힌다
+   - 기계는 비어 있는지만 본다. 도메인마다 엔터티·상태·역할 이름이 다 들어갔는지는 여기서 직접 확인한다
 
 ### 4. 승인 요청
 
@@ -94,6 +96,7 @@ description: harness-psw 요구사항(REQ)의 상세를 채운다. 인터뷰가 
 2. 사용자가 승인한 파일만 `status: approved`가 된다
    - 승인은 사용자가 직접 실행한다: `bash .claude/scripts/psw/approve.sh docs/req` (도메인만이면 `docs/req/functional/<domain>`)
      - 실행 방법은 `.claude/scripts/psw/approve.sh` 머리 주석을 읽고 그대로 안내한다
+     - 안내에 실행할 폴더(프로젝트 루트 절대 경로)와 브랜치(`dev`)를 적는다. `approve.sh`는 기능 브랜치에서는 멈춘다
    - 영역 파일과 `actors.md`도 같은 방법으로 승인한다
    - 에이전트의 승인 시도는 hook이 막는다
    - 승인 커밋 트레일러: `Refs: <도메인 접두사>`
