@@ -22,6 +22,7 @@ description: harness-psw 기획 인터뷰를 진행한다. 프로젝트 주제�
 
 - 질문 목록과 순서, 답을 적을 위치: `references/checklist.md`
 - 템플릿: `psw-req`의 `references/*.md`. 파일이 없으면 그 템플릿으로 만든다
+- `docs/req/`에 첫 문서를 만들 때 `docs/req/.gitkeep`이 있으면 지운다
 - 한 번에 3~5개씩 묻는다
   → 한꺼번에 많이 물으면 답이 얕아진다
 - 질문마다 선택지와 추천안을 함께 제시한다

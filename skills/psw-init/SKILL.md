@@ -39,6 +39,7 @@ docs/design/
 ```
 
 - `docs/req/`, `docs/design/` 아래 하위 폴더와 파일은 `psw-interview`, `psw-req`, `psw-design`이 필요할 때 만든다
+- `.gitkeep`은 그 폴더에 첫 문서를 만드는 스킬이 지운다 (`docs/req/`는 `psw-interview`, `docs/design/`은 `psw-design`)
 
 ### 4. 템플릿 복사
 

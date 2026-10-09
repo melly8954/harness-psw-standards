@@ -73,7 +73,7 @@ description: harness-psw 피드백 루프를 처리한다. 미결(docs/open-ques
 | 바뀐 것 | 다시 볼 곳 |
 |---|---|
 | 상태 전이 (`_policy.md`) | 해당 상태를 바꾸는 FR, 관련 AC 테스트, 해당 목업 |
-| 화면 (IA) | 해당 목업, 셸 메뉴 (`ui/kit/shell.js`) |
+| 화면 (IA) | 해당 목업, 셸 메뉴 (`ui/kit/shell.js` 또는 `ui/kit/shell-<체계>.js`) |
 | 컴포넌트, 테마 | 해당 컴포넌트를 쓰는 목업 (`data-component`로 찾는다) |
 | 코드 규칙 (`conventions.md`) | 규칙을 따르는 기존 코드. 고칠지 사용자에게 확인한다 |
 

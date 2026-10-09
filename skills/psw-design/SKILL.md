@@ -34,7 +34,8 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
   - 키트의 문서 조각 중 REQ 초안은 설계에서 REQ로 만들지 않는다. `psw-loop`로 기획 루프를 호출한다
 - 순서: 아키텍처 → UI 기초 · 백엔드 기초 → 코드 규칙 → 화면
 - 문서
-  - 전역: `architecture.md`, `security.md`, `conventions.md`, `ui/ia/README.md`, `ui/ui-rules.md`, `ui/components.md`, `ui/kit/shell.js`
+  - 전역: `architecture.md`, `security.md`, `conventions.md`, `ui/ia/README.md`, `ui/ui-rules.md`, `ui/components.md`, `ui/kit/shell.js`(메뉴 체계가 둘 이상이면 `ui/kit/shell-<체계>.js`)
+  - `docs/design/`에 첫 문서를 만들 때 `docs/design/.gitkeep`이 있으면 지운다
   - 도메인별: `ui/ia/<domain>.md`, `ui/screens/<domain>/`
 - 쓰지 않는 문서: ERD, 도메인별 API 명세, 상태 전이 문서, 연동 문서
   - 테이블·API는 코드가 정본이다. 규칙은 `conventions.md` DB·REST 절에 둔다
@@ -59,6 +60,9 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
 2. `architecture.md`, `security.md`를 쓴다
    - 연동 요구사항이 있으면 `architecture.md` 외부 연동 절에 호출·실패 처리·테스트 환경을 쓴다
    - 프로젝트별 결정: 시크릿 저장소 도구를 사용자에게 정하게 하고 배포 단위 절에 적는다. 정하지 못하면 미결로 등록한다
+   - 관측 스택 NFR(메트릭·로그 수집, 대시보드)이 있으면 `architecture.md` 운영 절을 쓴다 (harness-psw 6절)
+     - 도구와 이유, 모으는 메트릭·로그, 대시보드 이름, 실행 범위, 근거 NFR. 구성 값은 옮겨 적지 않는다
+     - 구성 파일은 루트 `infra/`에 두고 운영 절에 경로를 적는다. 구성 파일을 만드는 시점(설계 중 / 첫 FR 전 구현 준비)을 사용자에게 정하게 한다
 3. 프로젝트별 결정: 프론트 키트의 프레임워크, 태그, 테마를 사용자에게 정하게 하고 `architecture.md` UI 절에 적는다
    - 키트에 없는 프레임워크면 멈추고 알린다. 키트에 프레임워크를 먼저 추가한다
    - 키트를 고쳐 쓰는데 아직 태그가 없으면 커밋 해시로 적고 미결(보류)로 등록한다. 태그가 나오면 바꾸고 미결을 닫는다
@@ -81,11 +85,15 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    - 키트의 `web/components.md`를 `docs/design/ui/components.md`로 복사하고, 쓰지 않을 컴포넌트는 뺀다
 3. `ui/ui-rules.md`를 쓴다
    - 커스터마이즈는 테마 변수로만 한다. 컴포넌트 코드의 스타일을 직접 바꾸지 않는다
+   - 반응형 절: 기준점 폭, 화면 종류별 좁은 폭 변환, 폭별로 확인할 목업. 기준 폭을 정한 NFR이 있으면 그 값을 쓰고 `refs`에 적는다
+   - 다국어 요구사항이 있으면 문구 규칙에 메시지 키 규칙을 쓴다. 설치와 파일 위치는 키트 프레임워크 절차의 다국어 단계를 따른다
 4. `ui/ia/README.md`에 도메인 색인, 셸 없는 화면, 메뉴 계층, 화면 흐름을 쓴다 (`references/ia-readme.md`)
+   - 한 앱에 메뉴 체계가 둘 이상이면(예: 이용자 화면과 관리자 화면) 체계 이름을 정하고, 메뉴 계층을 체계마다 나눠 쓴다. 화면마다 어느 체계에 속하는지는 도메인 화면 목록에서 알 수 있게 한다
    - 메뉴를 관리 기능으로 바꾸는 요구사항이 있으면, 메뉴 계층이 초기 메뉴라는 것과 근거 FR을 적는다
 5. 셸을 만든다
-   - 형태와 설정(키트 셸 틀의 설정 구역, 모바일 메뉴 방식 포함)을 사용자에게 정하게 하고 `architecture.md` UI 절에 적는다
-   - 키트의 셸 틀을 `ui/kit/shell.js`로 복사하고, 설정과 메뉴만 고친다. 방법은 키트의 `web/mockup/README.md`
+   - 메뉴 체계마다 셸 파일 하나를 둔다. 체계가 하나면 `ui/kit/shell.js`, 둘 이상이면 `ui/kit/shell-<체계>.js`
+   - 형태와 설정(키트 셸 틀의 설정 구역, 모바일 메뉴 방식 포함)을 셸 파일마다 사용자에게 정하게 하고 `architecture.md` UI 절에 적는다
+   - 키트의 셸 틀을 셸 파일로 복사하고, 설정과 메뉴만 고친다. 방법은 키트의 `web/mockup/README.md`
    - 메뉴는 `ia/README.md` 메뉴 계층을 그대로 옮긴다. 메뉴가 바뀌면 `ia/README.md`를 먼저 고친다
 
 ### 2-B. 백엔드 기초 (전역, 첫 도메인에서 한 번)
@@ -130,7 +138,7 @@ UI는 디자인을 새로 만들지 않는다. 프론트 키트(`harness-psw-fro
    - 만드는 방법은 키트의 `web/mockup/README.md`를 따른다. 키트는 `architecture.md`에 적은 태그로 가져온다
    - 첫 줄은 메타 주석이다. `crosscheck.sh`가 읽는 형식이라 바꾸지 않는다
      `<!-- psw id: SCR-ORD-001 | refs: FR-ORD-001, FR-ORD-003 | status: draft -->`
-   - 셸은 `ui/kit/shell.js`를 불러온다. 셸 없는 화면 목록에 있는 화면은 불러오지 않는다
+   - 셸은 화면이 속한 메뉴 체계의 셸 파일을 불러온다. 셸 없는 화면 목록에 있는 화면은 불러오지 않는다
    - 테마는 프론트 코드의 테마 파일을 상대 경로로 연결한다. 복사하지 않는다
    - 컴포넌트는 키트 조각을 그대로 쓰고, 컴포넌트를 쓴 요소에 `data-component`를 단다
    - 기본, 빈 상태, 로딩, 오류 네 가지 상태를 채운다

@@ -9,6 +9,7 @@
 #
 # 사용법: approve.sh <파일 또는 폴더...>
 #   - status: draft 인 md 파일(frontmatter)과 목업 html(메타 주석)을 approved로 바꾼다
+#   - docs/design/ui/kit/ 아래 파일은 건너뛴다. 목업이 함께 쓰는 파일과 빌더 템플릿이라 승인 대상이 아니다 (harness-psw 4.4)
 #   - 미정 또는 끊긴 [OPEN-NNN] 자리표시가 남은 파일은 건너뛴다 (보류 항목은 허용, docs/open-question.md)
 #   - 문서는 dev에서 승인한다. 기능 브랜치(feat/*)에서 실행하면 아무것도 바꾸지 않고 멈춘다
 #   - 커밋은 하지 않는다
@@ -68,6 +69,7 @@ open_blockers() { # 파일에 남은, 승인을 막는 자리표시
 approved=()
 skipped=()
 for f in "${files[@]}"; do
+  case "$f" in ui/kit/*|*/ui/kit/*) continue ;; esac
   case "$f" in
     *.md)
       # 첫 frontmatter 안의 status만 본다

@@ -35,7 +35,9 @@ flowchart LR
 - 프론트 키트: `harness-psw-frontend` <태그>, 테마 <이름>, 프레임워크 <이름> 〔YYYY-MM-DD〕 <이유>
 - 테마 파일: <예: frontend/app/theme.css>
 - 컴포넌트 코드: <예: frontend/components/ui/>
+- 메시지 파일: <다국어 요구사항이 있을 때만. 예: frontend/messages/{ko,en}.json, 라이브러리 next-intl>
 - 셸: <형태, 예: 사이드바형>, 설정 <예: 왼쪽 · 아이콘만 남김 · 벽에 붙음 · 펼침> 〔YYYY-MM-DD〕 <이유>. 목업 셸 `ui/kit/shell.js`
+  <!-- 메뉴 체계가 둘 이상이면 체계마다 한 줄: 셸(<체계>): <형태>, 설정 <...> 〔YYYY-MM-DD〕 <이유>. 목업 셸 `ui/kit/shell-<체계>.js` -->
 - 셸 코드: <예: frontend/components/app-sidebar.tsx, frontend/app/layout.tsx>
 
 ## 백엔드
@@ -64,6 +66,20 @@ flowchart LR
 | <타임아웃> | <결제 실패로 처리하고 B001 응답> | <승인 취소 요청> |
 
 - 테스트 환경: 샌드박스 <있음 / 없음>, 키 준비 <준비됨 / 대기 [OPEN-NNN]>
+
+## 운영
+
+<!-- 관측 스택 NFR이 있을 때만 쓴다. 없으면 "해당 없음" (harness-psw 6절). 구성 값은 옮겨 적지 않는다 -->
+
+- 관측 스택: <예: Prometheus + Grafana, ELK> 〔YYYY-MM-DD〕 <이유>
+- 실행 범위: <예: 로컬 Docker Compose>
+- 구성 파일: <예: infra/compose.yaml, infra/prometheus/, infra/grafana/dashboards/>
+- 근거: <NFR-OBS-NNN>
+
+| 대상 | 모으는 것 | 보는 곳 |
+|---|---|---|
+| <백엔드 메트릭> | <요청 수·지연·오류율, JVM> | <대시보드 이름> |
+| <로그> | <앱 로그(JSON), traceId> | <Kibana 인덱스 패턴> |
 
 ## 배포 단위
 
